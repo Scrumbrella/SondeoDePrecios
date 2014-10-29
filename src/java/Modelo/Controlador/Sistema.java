@@ -61,19 +61,21 @@ public class Sistema extends HttpServlet {
                 switch(accion){
                     case "newCat":
                        res = addCategoria(request.getParameter("frmNewName"), request.getParameter("frmNewDesc"));
-                       request.setAttribute("usuario",request.getParameter("frmNewName"));
-                        rd = request.getRequestDispatcher("/index.jsp");
-                        rd.forward(request, response);
+                       
                     break;
                 }
                 
             }
+            request.setAttribute("usuario",request.getParameter("frmNewName"));
+            rd = request.getRequestDispatcher("/index.jsp");
+            rd.forward(request, response);
         }else{
             request.setAttribute("titulo", ".::Bienvenido::.");
             request.setAttribute("usuario", "Nahúm Gálvez");
             rd = request.getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -102,6 +104,7 @@ public class Sistema extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         processRequestPost(request, response);
     }
 

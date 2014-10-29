@@ -96,7 +96,7 @@ public class CatalogoDeCategoria {
                 }
             }
         }else{
-            res = "nombre no valido";
+            res = "tiene nombre no valido";
         }
         return res;
     }

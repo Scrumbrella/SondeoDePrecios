@@ -3,7 +3,6 @@
     <servlet>
         <servlet-name>Sistema</servlet-name>
         <servlet-class>Modelo.Controlador.Sistema</servlet-class>
-        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Sistema</servlet-name>

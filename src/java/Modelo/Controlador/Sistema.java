@@ -4,6 +4,7 @@ package Modelo.Controlador;
 import Modelo.Categoria;
 import Modelo.DAO.CatalogoDeCategoria;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -53,22 +54,39 @@ public class Sistema extends HttpServlet {
     
     private void processRequestPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration<String> parametros =  request.getParameterNames();
+        PrintWriter out = response.getWriter();
         RequestDispatcher rd;
-        String res = "No paso nada";
+        String res = "";
         if(parametros.hasMoreElements()){
             String accion = request.getParameter("action");
             if(accion != null){
                 switch(accion){
                     case "newCat":
                        res = addCategoria(request.getParameter("frmNewName"), request.getParameter("frmNewDesc"));
-                       
                     break;
                 }
                 
             }
-            request.setAttribute("usuario",request.getParameter("frmNewName"));
-            rd = request.getRequestDispatcher("/index.jsp");
-            rd.forward(request, response);
+            
+            String tipo = "info";
+            switch(res){
+                case "ya existe":
+                    tipo = "danger";
+                break;
+                case "":
+                    tipo = "warning";
+                break;
+                case "se ingreso correctamente":
+                    tipo = "success";
+                break;
+                case "no se ingreso":
+                    tipo = "danger";
+                break;
+            }
+            response.setCharacterEncoding("UTF-8");
+            String mensaje = "<div class=\"alert alert-dismissable alert-"+tipo+"\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">*</button>"
+                    + "La Categor&iacute;a: \""+new String(request.getParameter("frmNewName").getBytes("UTF-8"))+"\" "+res+"</div>";
+            out.println(mensaje);
         }else{
             request.setAttribute("titulo", ".::Bienvenido::.");
             request.setAttribute("usuario", "Nahúm Gálvez");

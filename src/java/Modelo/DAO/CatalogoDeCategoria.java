@@ -35,11 +35,11 @@ public class CatalogoDeCategoria {
             session.save(categoria);
             tx.commit();
             session.close();
-            res = "Ingresado";
+            res = "se ingreso correctamente";
         }catch(HibernateException ex){
             if(tx != null)
                 tx.rollback();
-            res = "No ingresado";
+            res = "no se ingreso";
         }
         return res;
     }
@@ -91,12 +91,12 @@ public class CatalogoDeCategoria {
            this.categorias = getCategorias();
             for (Categoria categoria : categorias) {
                 if(categoria.getNombre().equalsIgnoreCase(nombre)){
-                    res = "YaExiste";
+                    res = "ya existe";
                     break;
                 }
             }
         }else{
-            res = "NoValidoName";
+            res = "nombre no valido";
         }
         return res;
     }

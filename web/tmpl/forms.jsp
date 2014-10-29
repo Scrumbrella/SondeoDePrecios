@@ -7,7 +7,8 @@
         <h4 class="modal-title text-info" id="myModalLabel">Agregar Categoría</h4>
       </div>
       <div class="modal-body">
-          <form role="form" action="<%= request.getContextPath() %>/home" method="post" id="fNC">
+          <div id="datos"></div>
+          <form role="form" id="fNC">
             <div class="form-group">
                 <label for="frmNewName">Nombre</label>
                 <input type="text" id="frmNewName" name="frmNewName" class="form-control" required size="100">
@@ -18,10 +19,11 @@
             </div>
             <input type="hidden" value="newCat" name="action">
         </form>
+          
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="submit" class="btn btn-success" form="fNC">Crear Categoría</button>
+        <button type="button" class="btn btn-success" form="fNC" id="btnSubmitNewCat">Crear Categoría</button>
       </div>
     </div>
   </div>

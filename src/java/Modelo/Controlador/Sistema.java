@@ -5,6 +5,7 @@ import Modelo.Categoria;
 import Modelo.DAO.CatalogoDeCategoria;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,14 +41,41 @@ public class Sistema extends HttpServlet {
         }
     }
     
-    private String addCategoria(String nombre, String descripcion){
-        
+    private void mostrarCategorias(PrintWriter out){
+        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
+        ArrayList<Categoria> lista = catalogo.getCategorias();
+        String option = "";
+        for (Categoria categoria : lista) {
+            option += "<option value=\""+categoria.getIdcategoria()+"\">"+categoria.getNombre()+"</option>";
+        }
+        out.println(option);
+    }
+    
+    private void addCategoria(String nombre, String descripcion,PrintWriter out){
         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
         String hecho = catalogo.validarNombre(nombre);
         if(hecho.equals("EsValido")){
             hecho = catalogo.addCategoria(new Categoria(nombre, descripcion));
         }
-        return hecho;
+        
+        String tipo = "info";
+            switch(hecho){
+                case "ya existe":
+                    tipo = "danger";
+                break;
+                case "":
+                    tipo = "warning";
+                break;
+                case "se ingreso correctamente":
+                    tipo = "success";
+                break;
+                case "no se ingreso":
+                    tipo = "danger";
+                break;
+            }
+            String mensaje = "<div class=\"alert alert-dismissable alert-"+tipo+"\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">*</button>"
+                    + "La Categor&iacute;a: \""+nombre+"\" "+hecho+"</div>";
+            out.println(mensaje);
     }
     
     
@@ -62,31 +90,16 @@ public class Sistema extends HttpServlet {
             if(accion != null){
                 switch(accion){
                     case "newCat":
-                       res = addCategoria(request.getParameter("frmNewName"), request.getParameter("frmNewDesc"));
+                       addCategoria(request.getParameter("frmNewName"), request.getParameter("frmNewDesc"), out);
+                    break;
+                    case "showCat":
+                        mostrarCategorias(out);
                     break;
                 }
                 
             }
             
-            String tipo = "info";
-            switch(res){
-                case "ya existe":
-                    tipo = "danger";
-                break;
-                case "":
-                    tipo = "warning";
-                break;
-                case "se ingreso correctamente":
-                    tipo = "success";
-                break;
-                case "no se ingreso":
-                    tipo = "danger";
-                break;
-            }
-            response.setCharacterEncoding("UTF-8");
-            String mensaje = "<div class=\"alert alert-dismissable alert-"+tipo+"\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">*</button>"
-                    + "La Categor&iacute;a: \""+new String(request.getParameter("frmNewName").getBytes("UTF-8"))+"\" "+res+"</div>";
-            out.println(mensaje);
+            
         }else{
             request.setAttribute("titulo", ".::Bienvenido::.");
             request.setAttribute("usuario", "Nahúm Gálvez");

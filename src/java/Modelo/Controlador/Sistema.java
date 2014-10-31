@@ -97,7 +97,7 @@ public class Sistema extends HttpServlet {
          CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
         String hecho = catalogo.validarNombre(nombre);
         if(hecho.equals("EsValido")){
-            hecho = catalogo.addCategoria(new Categoria( idCategoria, nombre, descripcion));
+            hecho = catalogo.modificarCategoria(new Categoria( idCategoria, nombre, descripcion));
         }
         
         String tipo = "info";

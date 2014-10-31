@@ -87,17 +87,13 @@ $(document).ready(function() {
             if (idCatSel !== "0") {
                 $.post('home', {idCat: idCatSel, nombre: newModName, descripcion: newModDesc, action: 'CatMod'},
                 function(responseText) {
-                    if (responseText === "ok") {
-                        $('#msgModCat').html('<div class="alert alert-dismissable alert-success"><button type="button" class="close" data-dismiss="alert">×</button><strong>¡Exito!</strong> Se ha modificado la categoría: "' + value + '".</div>');
-                        $('#frmModDesc').val("");
-                        $('#frmModName').val("");
-                        $.post('home', {action: 'showCat'},
-                        function(responseText) {
-                            $('#sltcatMod').html(responseText);
-                        });
-                    } else {
-                        $('#msgModCat').html('<div class="alert alert-dismissable alert-danger"><button type="button" class="close" data-dismiss="alert">×</button><strong>¡Rayos!</strong> Ocurrio un error al modificar la categoría: "' + value + '".</div>');
-                    }
+                    $('#msgModCat').html(responseText);
+                    $('#frmModDesc').val("");
+                    $('#frmModName').val("");
+                    $.post('home', {action: 'showCat'},
+                    function(responseText) {
+                        $('#sltcatMod').html(responseText);
+                    });
                 });
             } else {
                 $('#msgModCat').html('<div class="alert alert-dismissable alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><strong>¡Por Favor!</strong> Seleccione una categoría a ser modificada.</div>');

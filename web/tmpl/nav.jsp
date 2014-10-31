@@ -16,7 +16,7 @@
           <li><a href="#frmModCat" data-toggle="modal">Modificar</a></li>
           <li class="divider"></li>
           <li class="dropdown-header text-warning">Precauci&oacute;n!</li>
-          <li><a href="#frmDelCat" data-toggle="modal">Eliminar</a></li>
+          <li><a id="btnDelCat" href="#" >Eliminar</a></li>
         </ul>
       </li>
     </ul>

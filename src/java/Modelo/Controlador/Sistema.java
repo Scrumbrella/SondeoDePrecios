@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Nahum
  */
 public class Sistema extends HttpServlet {
+    CatalogoDeCategoria catalogo;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -78,7 +79,10 @@ public class Sistema extends HttpServlet {
             out.println(mensaje);
     }
     
-    
+    private void seleccionarCategoria(int idCategoria, PrintWriter out){
+       Categoria cat = this.catalogo.getCategoria(idCategoria);
+       out.print(cat.getDescripcion());
+    }
     
     private void processRequestPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration<String> parametros =  request.getParameterNames();
@@ -94,6 +98,10 @@ public class Sistema extends HttpServlet {
                     break;
                     case "showCat":
                         mostrarCategorias(out);
+                    break;
+                    case "descCatDel":
+                        int idCat = new Integer(request.getParameter("idCat"));
+                        seleccionarCategoria(idCat, out);
                     break;
                 }
                 

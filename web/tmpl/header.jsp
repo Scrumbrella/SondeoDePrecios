@@ -6,5 +6,5 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${requestScope['titulo']}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.min.slate.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.min.cosmo.css" type="text/css" media="screen">
 </head>

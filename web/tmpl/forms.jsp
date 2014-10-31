@@ -31,7 +31,7 @@
 
 
 
-<!-- Modal -->
+<!-- Eliminar -->
 <div class="modal fade" id="frmDelCat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -44,14 +44,11 @@
           <form role="form" id="fDC" method="post" action="<%= request.getContextPath() %>/home">
             <div class="form-group">
                 <span class="help-block">Seleccione la categoría a ser eliminada.</span>
-                <select id="sltcat" name="sltCatDel" onchange="">
-                    <option disabled="">Seleccionar...</option>
-                    <option>Lacteos</option>
-                    <option>Carnes</option>
-                    <option>Embutidos</option> 
+                <select id="sltcat" name="sltCatDel">
                 </select>
             </div>
-        </form>
+           </form>
+            <div id="desCatDel"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

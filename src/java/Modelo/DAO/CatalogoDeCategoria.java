@@ -44,7 +44,8 @@ public class CatalogoDeCategoria {
         return res;
     }
     
-    public void eliminarCategoria(Categoria categoria){
+    public boolean eliminarCategoria(Categoria categoria){
+        boolean res;
         SessionFactory sf;
         Session session;
         Transaction tx = null;
@@ -55,10 +56,13 @@ public class CatalogoDeCategoria {
             session.delete(categoria);
             tx.commit();
             session.close();
+            res = true;
         }catch(HibernateException ex){
             if(tx != null)
                 tx.rollback();
+            res = false;
         }
+        return res;
     }
     
     public void modificarCategoria(Categoria categoria){
@@ -96,7 +100,7 @@ public class CatalogoDeCategoria {
                 }
             }
         }else{
-            res = "tiene nombre no valido";
+            res = "tiene el nombre invalido";
         }
         return res;
     }

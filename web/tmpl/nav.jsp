@@ -1,4 +1,4 @@
-<div class="navbar navbar-default">
+<div class="navbar navbar-inverse">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
       <span class="icon-bar"></span>
@@ -13,7 +13,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categor&iacute;as <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="#frmNewCat" data-toggle="modal">Agregar</a></li>
-          <li><a href="#frmModCat" data-toggle="modal">Modificar</a></li>
+          <li><a id="btnModCatNav" href="#">Modificar</a></li>
           <li class="divider"></li>
           <li class="dropdown-header text-warning">Precauci&oacute;n!</li>
           <li><a id="btnDelCat" href="#" >Eliminar</a></li>

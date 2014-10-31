@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Nahum
  */
 public class Sistema extends HttpServlet {
-    CatalogoDeCategoria catalogo;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,10 +41,20 @@ public class Sistema extends HttpServlet {
         }
     }
     
+    private void eliminarCategoria(int idCategoria, PrintWriter out){
+        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
+        Categoria cat = catalogo.getCategoria(idCategoria);
+        boolean hecho = catalogo.eliminarCategoria(cat);
+        if(hecho)
+            out.print("ok");
+        else
+            out.print("fail");
+    }
+    
     private void mostrarCategorias(PrintWriter out){
         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
         ArrayList<Categoria> lista = catalogo.getCategorias();
-        String option = "";
+        String option = "<option  value=\"0\">Selecionar...</option>";
         for (Categoria categoria : lista) {
             option += "<option value=\""+categoria.getIdcategoria()+"\">"+categoria.getNombre()+"</option>";
         }
@@ -80,15 +89,14 @@ public class Sistema extends HttpServlet {
     }
     
     private void seleccionarCategoria(int idCategoria, PrintWriter out){
-       Categoria cat = this.catalogo.getCategoria(idCategoria);
-       out.print(cat.getDescripcion());
+       CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
+       out.print(catalogo.getCategoria(idCategoria).getDescripcion());
     }
     
     private void processRequestPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration<String> parametros =  request.getParameterNames();
         PrintWriter out = response.getWriter();
         RequestDispatcher rd;
-        String res = "";
         if(parametros.hasMoreElements()){
             String accion = request.getParameter("action");
             if(accion != null){
@@ -100,9 +108,13 @@ public class Sistema extends HttpServlet {
                         mostrarCategorias(out);
                     break;
                     case "descCatDel":
-                        int idCat = new Integer(request.getParameter("idCat"));
-                        seleccionarCategoria(idCat, out);
+                        seleccionarCategoria(Integer.parseInt(request.getParameter("idCat")), out);
                     break;
+                    case "CatDel":
+                        eliminarCategoria(Integer.parseInt(request.getParameter("idCat")), out);
+                    break;
+                    case "getCatValues":
+                        break;
                 }
                 
             }

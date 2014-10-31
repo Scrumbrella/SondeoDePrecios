@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Recurso no encontrado</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.min.cyborg.css" type="text/css" media="screen">
-    <link href="<%= request.getContextPath()%>/css/iconFont.css" rel="stylesheet" type="text/css" >
-    <link href="<%= request.getContextPath()%>/css/index.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<%= request.getContextPath()%>/css/bootstrap.min.lumen.css" type="text/css" media="screen">
     <style>
         .error-template {padding: 40px 15px;text-align: center;}
 .error-actions {margin-top:15px;margin-bottom:15px;}

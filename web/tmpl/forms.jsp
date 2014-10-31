@@ -83,7 +83,7 @@
                     <form role="form" action="<%= request.getContextPath()%>/home" method="post" id="fNC">
                         <div class="form-group">
                             <span class="help-block">Seleccione la categoría a modificar.</span>
-                            <select id="sltcatMod" name="sltCatMod">
+                            <select id="sltcatMod" name="sltCatMod"><option value="0">...Cargando...</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -92,14 +92,14 @@
                         </div>
                         <div class="form-group float-label-control">
                             <label for="frmModDesc">Descripción</label>
-                            <textarea class="form-control" id="frmModDesc" name="frmNewDesc" rows="2" cols="55" required></textarea>
+                            <textarea class="form-control" id="frmModDesc" name="frmNewDesc" rows="3" cols="55" required></textarea>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-warning" >Modificar Categoría</button>
+                <button type="button" class="btn btn-warning" id="btnFrmModCatExe">Modificar Categoría</button>
             </div>
         </div>
     </div>

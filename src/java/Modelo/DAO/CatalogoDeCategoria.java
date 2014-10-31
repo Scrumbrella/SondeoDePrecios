@@ -65,8 +65,25 @@ public class CatalogoDeCategoria {
         return res;
     }
     
-    public void modificarCategoria(Categoria categoria){
-    
+    public String modificarCategoria(Categoria categoria){
+        String res;
+        SessionFactory sf;
+        Session session;
+        Transaction tx = null;
+        try{
+            sf = HibernateUtil.getSessionFactory();
+            session = sf.openSession();
+            tx = session.beginTransaction();
+            session.update(categoria);
+            tx.commit();
+            session.close();
+            res = "se modifico correctamente";
+        }catch(HibernateException ex){
+            if(tx != null)
+                tx.rollback();
+            res = "no se modifico";
+        }
+        return res;
     }
     
     public ArrayList<Categoria> getCategorias(){

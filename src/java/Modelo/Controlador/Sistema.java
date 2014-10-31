@@ -93,6 +93,40 @@ public class Sistema extends HttpServlet {
        out.print(catalogo.getCategoria(idCategoria).getDescripcion());
     }
     
+    private void modificarCategoria (String nombre, String descripcion, int idCategoria, PrintWriter out){
+         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
+        String hecho = catalogo.validarNombre(nombre);
+        if(hecho.equals("EsValido")){
+            hecho = catalogo.addCategoria(new Categoria( idCategoria, nombre, descripcion));
+        }
+        
+        String tipo = "info";
+            switch(hecho){
+                case "ya existe":
+                    tipo = "danger";
+                break;
+                case "":
+                    tipo = "warning";
+                break;
+                case "se modifico correctamente":
+                    tipo = "success";
+                break;
+                case "no se modifico":
+                    tipo = "danger";
+                break;
+            }
+            String mensaje = "<div class=\"alert alert-dismissable alert-"+tipo+"\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">*</button>"
+                    + "La Categor&iacute;a: \""+nombre+"\" "+hecho+"</div>";
+            out.println(mensaje);
+    }
+    
+    private void selCat(int idCategoria, PrintWriter out){
+       CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
+       Categoria cat = catalogo.getCategoria(idCategoria);
+       out.print(cat.getDescripcion()+"|"+cat.getNombre());
+    }
+    
+    
     private void processRequestPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration<String> parametros =  request.getParameterNames();
         PrintWriter out = response.getWriter();
@@ -114,12 +148,17 @@ public class Sistema extends HttpServlet {
                         eliminarCategoria(Integer.parseInt(request.getParameter("idCat")), out);
                     break;
                     case "getCatValues":
-                        break;
+                       selCat(Integer.parseInt(request.getParameter("idCat")), out);
+                    break;
+                    case "CatMod": 
+                        String nombre = request.getParameter("nombre");
+                        String descripcion = request.getParameter("descripcion");
+                        int idCat = Integer.parseInt(request.getParameter("idCat"));
+                        modificarCategoria(nombre, descripcion, idCat, out);
+                    break;
                 }
                 
             }
-            
-            
         }else{
             request.setAttribute("titulo", ".::Bienvenido::.");
             request.setAttribute("usuario", "Nahúm Gálvez");

@@ -21,7 +21,9 @@ public class CatalogoDeCategoria {
     public CatalogoDeCategoria() {
     }
     
-   
+   public Categoria validarCategoria(Categoria cat){
+       return cat;
+   }
     
     public String addCategoria(Categoria categoria){
        String res;
@@ -105,15 +107,17 @@ public class CatalogoDeCategoria {
         return cat;
     }
     
-    public String validarNombre(String nombre){
+    public String validarNombre(String nombre, boolean verExiste){
         boolean valido = nombre.matches("[a-zA-Z ñáéíóú]*");
         String res ="EsValido";
         if(valido){
-           this.categorias = getCategorias();
-            for (Categoria categoria : categorias) {
-                if(categoria.getNombre().equalsIgnoreCase(nombre)){
-                    res = "ya existe";
-                    break;
+            if (verExiste) {
+                this.categorias = getCategorias();
+                for (Categoria categoria : categorias) {
+                    if (categoria.getNombre().equalsIgnoreCase(nombre)) {
+                        res = "ya existe";
+                        break;
+                    }
                 }
             }
         }else{

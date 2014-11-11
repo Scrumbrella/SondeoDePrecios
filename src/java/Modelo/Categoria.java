@@ -61,18 +61,6 @@ public class Categoria  implements java.io.Serializable {
     public void setProductos(Set productos) {
         this.productos = productos;
     }
-
-    public void crearProducto(String nombre, String Descripcion, Categoria categoria){
-    
-    }
-    
-    public void removeProducto(int idProducto){
-    
-    }
-    
-    public void modificarProducto(int idProducto, String nombreProducto, String descripcion, Categoria categoria){
-    
-    }
     
 
 }

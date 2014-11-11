@@ -14,17 +14,35 @@ public class Producto  implements java.io.Serializable {
      private Categoria categoria;
      private String nombre;
      private String descripcion;
+     private String unidadMedida;
+
+    public Producto(int idproducto, Categoria categoria, String nombre, String descripcion, String unidadMedida) {
+        this.idproducto = idproducto;
+        this.categoria = categoria;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.unidadMedida = unidadMedida;
+    }
 
     public Producto() {
     }
 
-    public Producto(int idproducto, Categoria categoria, String nombre, String descripcion) {
-       this.idproducto = idproducto;
-       this.categoria = categoria;
-       this.nombre = nombre;
-       this.descripcion = descripcion;
+    
+    public Producto(Categoria categoria, String nombre, String descripcion, String unidadMedida) {
+        this.categoria = categoria;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.unidadMedida = unidadMedida;
     }
 
+    public String getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(String unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+        
     public Producto(Categoria categoria, String nombre, String descripcion) {
         this.categoria = categoria;
         this.nombre = nombre;
@@ -60,7 +78,7 @@ public class Producto  implements java.io.Serializable {
     }
     
     public boolean esIgual(String nombre){
-        return nombre == this.nombre;
+        return nombre.equalsIgnoreCase(this.nombre);
     }
 }
 

@@ -7,6 +7,8 @@
     <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
     <property name="hibernate.connection.username">sondeoprecios</property>
     <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.show_sql">true</property>
     <mapping resource="Modelo/Producto.hbm.xml"/>
     <mapping class="" file="" jar="" package="" resource="Modelo/Categoria.hbm.xml"/>
   </session-factory>

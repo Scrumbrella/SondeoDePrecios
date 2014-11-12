@@ -4,4 +4,6 @@
   <schema-selection match-schema="SONDEOPRECIOS"/>
   <table-filter match-name="CATEGORIA"/>
   <table-filter match-name="PRODUCTO"/>
+  <table-filter match-name="USUARIO"/>
+  <table-filter match-name="ROL"/>
 </hibernate-reverse-engineering>

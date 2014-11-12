@@ -4,6 +4,7 @@ import Modelo.Categoria;
 import Modelo.DAO.CatalogoDeCategoria;
 import Modelo.DAO.CatalogoDeProductos;
 import Modelo.Producto;
+import Modelo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,10 +31,20 @@ public class Sistema extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private CatalogoDeProductos catProducto;
     private CatalogoDeCategoria catCategoria;
-    
+
+    private boolean seguridad(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        Usuario user = (Usuario) session.getAttribute("usuario");
+        boolean res = true;
+        if (user == null) {
+            res = false;
+            request.getRequestDispatcher("/Login").forward(request, response);
+        }
+        return res;
+    }
+
     private void processRequestGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration<String> parametros = request.getParameterNames();
         RequestDispatcher rd;
@@ -40,9 +52,11 @@ public class Sistema extends HttpServlet {
         if (parametros.hasMoreElements()) {
 
         } else {
+            request.setAttribute("valido", "ok");
             request.setAttribute("titulo", ".::Bienvenido::.");
-            request.setAttribute("usuario", "Nahúm Gálvez");
-            request.setAttribute("email", "nahum32@live.com");
+            HttpSession sesion = request.getSession(true);
+            Usuario us = (Usuario) sesion.getAttribute("usuario");
+            request.setAttribute("usuario", us);
             rd = request.getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
         }
@@ -184,22 +198,22 @@ public class Sistema extends HttpServlet {
                         descripcion = request.getParameter("descripcion");
                         String unidad = request.getParameter("uniMedidad");
                         boolean valido = catProducto.validarNombre(nombre);
-                        if(valido){
+                        if (valido) {
                             int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
                             Categoria categoria = this.catCategoria.getCategoria(idCategoria);
                             Producto producto = new Producto(categoria, nombre, descripcion, "lb");
                             boolean hecho = this.catProducto.addProducto(producto);
-                            if(hecho){
+                            if (hecho) {
                                 out.print("Si");
-                            }else{
+                            } else {
                                 out.print("no");
                             }
-                        }else{
+                        } else {
                             out.print("No Valido");
                         }
-                        
+
                         //String //addProducto();
-                    break;
+                        break;
                 }
 
             }
@@ -224,7 +238,10 @@ public class Sistema extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequestGet(request, response);
+        boolean res = seguridad(request, response);
+        if (res) {
+            processRequestGet(request, response);
+        }
     }
 
     /**
@@ -238,8 +255,11 @@ public class Sistema extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        processRequestPost(request, response);
+        boolean res = seguridad(request, response);
+        if (res) {
+            request.setCharacterEncoding("UTF-8");
+            processRequestPost(request, response);
+        }
     }
 
     /**

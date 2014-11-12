@@ -9,7 +9,8 @@
     <property name="hibernate.connection.password">root</property>
     <property name="hibernate.current_session_context_class">thread</property>
     <property name="hibernate.show_sql">true</property>
-    <mapping resource="Modelo/Producto.hbm.xml"/>
-    <mapping class="" file="" jar="" package="" resource="Modelo/Categoria.hbm.xml"/>
+    <mapping class="Modelo.Producto" file="" jar="" package="Modelo" resource="Modelo/Producto.hbm.xml"/>
+    <mapping class="Modelo.Categoria" file="" jar="" package="Modelo" resource="Modelo/Categoria.hbm.xml"/>
+    <mapping class="Modelo.Usuario" package="Modelo" resource="Modelo/Usuario.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

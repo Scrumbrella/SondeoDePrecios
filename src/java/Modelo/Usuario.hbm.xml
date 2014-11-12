@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-27-2014 07:00:48 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="Modelo.Usuario" table="USUARIO" schema="SONDEOPRECIOS">
+        <id name="idUsuario" type="integer">
+            <column name="IDUSUARIO" precision="3" scale="0" />
+            <generator class="increment" />
+        </id>
+        <property name="nombre1" type="string">
+            <column name="NOMBRE1" length="100" not-null="true" />
+        </property>
+        <property name="nombre2" type="string">
+            <column name="NOMBRE2" length="100" not-null="true" />
+        </property>
+        <property name="apellido1" type="string">
+            <column name="APELLIDO1" length="100" not-null="true" />
+        </property>
+        <property name="apellido2" type="string">
+            <column name="APELLIDO2" length="100" not-null="true" />
+        </property>
+        <property name="pass" type="string">
+            <column name="PASS" length="128" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="EMAIL" length="100" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

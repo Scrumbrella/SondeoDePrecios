@@ -46,7 +46,11 @@ $(document).ready(function() {
         var idCatVar = $('#sltCatNewProd').val();
         var nombreVar = $('#frmNewNameProd').val();
         var descVar = $('#frmNewDescProd').val();
-        var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, action: 'newProd'};
+        var unidadVar;
+        $("#sltUniNewPro option:selected").each(function() {
+            unidadVar = $(this).val();
+        });
+        var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, unidad: unidadVar, action: 'newProd'};
         enviarDatos(datos, '#frmResNewPro', this);
     });
 

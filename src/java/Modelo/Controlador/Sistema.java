@@ -49,9 +49,7 @@ public class Sistema extends HttpServlet {
         Enumeration<String> parametros = request.getParameterNames();
         RequestDispatcher rd;
 
-        if (parametros.hasMoreElements()) {
-
-        } else {
+        if (!parametros.hasMoreElements()) {
             request.setAttribute("valido", "ok");
             request.setAttribute("titulo", ".::Bienvenido::.");
             HttpSession sesion = request.getSession(true);
@@ -196,12 +194,12 @@ public class Sistema extends HttpServlet {
                     case "newProd":
                         nombre = request.getParameter("nombre");
                         descripcion = request.getParameter("descripcion");
-                        String unidad = request.getParameter("uniMedidad");
+                        String unidad = request.getParameter("unidad");
                         boolean valido = catProducto.validarNombre(nombre);
                         if (valido) {
                             int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
                             Categoria categoria = this.catCategoria.getCategoria(idCategoria);
-                            Producto producto = new Producto(categoria, nombre, descripcion, "lb");
+                            Producto producto = new Producto(categoria, nombre, descripcion, unidad);
                             boolean hecho = this.catProducto.addProducto(producto);
                             if (hecho) {
                                 out.print("Si");

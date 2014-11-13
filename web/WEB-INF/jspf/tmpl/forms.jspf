@@ -52,6 +52,23 @@
                         <div class="form-group">
                             <label for="sltUniNewProd">Unidad Medida:</label>
                             <select id="sltUniNewProd" class="form-control" >
+                                <optgroup label="Comunes">
+                                    <option value="uni.">Unidades</option>
+                                </optgroup>
+                                <optgroup label="Volumen">
+                                    <option value="gal">Galones</option>
+                                    <option value="lt">Litros</option>
+                                    <option value="ml">Mililitros</option>
+                                    <option value="m3">Metros Cúbicos</option>
+                                    <option value="cm3">Centimetros Cúbicos</option>
+                                </optgroup>
+                                <optgroup label="Masa">
+                                    <option value="tons">Tonelada (t)</option>
+                                    <option value="kg">Kilogramo (kg)</option>
+                                    <option value="g">Gramo (g)</option>
+                                    <option value="mg">Miligramo (mg)</option>
+                                    <option value="lb">Libra (lb)</option>
+                                </optgroup>
                                 <optgroup label="Distancia">
                                     <option value="km">kilometros</option>
                                     <option value="m">metros</option>
@@ -61,9 +78,6 @@
                                     <option value="yrd">yardas</option>
                                     <option value="ft">pies</option>
                                     <option value="pulg">pulgadas </option>
-                                </optgroup>
-                                <optgroup label="Volumen">
-                                    
                                 </optgroup>
                             </select>
                         </div>

@@ -16,20 +16,17 @@ import org.hibernate.Transaction;
  * @author Nahum
  */
 public class CatalogoDeProductos {
-    ArrayList<Producto> productos;
-    public boolean validarNombre(String nombre){
-        boolean valido = esValido(nombre);
-        if(valido){
-            this.productos = getProductos();
-            for (Producto producto : this.productos) {
-                if(producto.esIgual(nombre)){
-                    valido = false;
-                    break;
-                }
-            }
-            
-        }
-        return valido;
+    private ArrayList<Producto> productos;
+    
+    public boolean noExisteProducto(String nombre) {
+        Session sesion;
+        boolean res;
+        sesion = Hibernate.HibernateUtil.getSessionFactory().openSession();
+        String hql = "FROM Producto WHERE nombre='" + nombre+"'";
+        Query consulta = sesion.createQuery(hql);
+        res = consulta.list().isEmpty();
+        sesion.close();
+        return res;
     }
     
     public boolean esValido(String nombre){

@@ -16,16 +16,40 @@ function showMsgEmpty(id) {
 }
 
 function showMsg(id, tipo, msg) {
-    $(id).html('<div class="alert alert-dismissable alert-'+tipo+'"><button type="button" class="close" data-dismiss="alert">×</button><strong>'+msg+'</strong>.</div>');
+    $(id).html('<div class="alert alert-dismissable alert-' + tipo + '"><button type="button" class="close" data-dismiss="alert">×</button><strong>' + msg + '</strong>.</div>');
 }
 
-function enviarDatos(valores, recibe, btn) {
+function procesarRespuesta(respuesta, recibe, cosa, accion) {
+    var tipo;
+    var mensaje;
+    switch (respuesta) {
+        case '1':
+            tipo = "success";
+            mensaje = "se "+accion+" correctamente";
+            break;
+        case '2':
+            tipo = "warning";
+            mensaje = "ya existe";
+            break;
+        case '0':
+            tipo = "danger";
+            mensaje = "no se "+accion;
+            break;
+        default:
+            tipo = "info";
+            mensaje = "ocurrio un error";
+            
+    }
+    showMsg(recibe, tipo, cosa + " " +mensaje);
+}
+
+function enviarDatos(valores, recibe, btn, cosa, accion) {
     if (!arrayVacio(valores)) {
         var l = Ladda.create(btn);
         l.start();
         $.post('home', valores, function(responseText) {
             l.stop();
-            $(recibe).html(responseText);
+            procesarRespuesta(responseText, recibe, cosa, accion)
         });
     } else {
         showMsgEmpty(recibe);
@@ -50,8 +74,9 @@ $(document).ready(function() {
         $("#sltUniNewPro option:selected").each(function() {
             unidadVar = $(this).val();
         });
+        console.log(unidadVar);
         var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, unidad: unidadVar, action: 'newProd'};
-        enviarDatos(datos, '#frmResNewPro', this);
+        enviarDatos(datos, '#frmResNewPro', this, "El producto "+nombreVar, "ingreso");
     });
 
     $('#btnSubmitNewCat').click(function(event) {
@@ -59,7 +84,7 @@ $(document).ready(function() {
         var nombreVarCat = $('#frmNewName').val();
         var descVarCat = $('#frmNewDesc').val();
         var datos = {frmNewName: nombreVarCat, frmNewDesc: descVarCat, action: 'newCat'};
-        enviarDatos(datos, '#datos', this)
+        enviarDatos(datos, '#datos', this, "La categoría "+nombreVarCat, "ingreso")
     });
 
     $('#btnNewProdNav').click(function() {
@@ -129,7 +154,7 @@ $(document).ready(function() {
             var idCatSel = $(this).val();
             var datos = {idCat: idCatSel, nombre: newModName, descripcion: newModDesc, action: 'CatMod'};
             if (idCatSel !== "0") {
-                enviarDatos(datos, '#msgModCat', btn);
+                enviarDatos(datos, '#msgModCat', btn, "La categoría "+newModName, "modifico");
                 $('#frmModDesc').val("");
                 $('#frmModName').val("");
                 showCats('#sltcatMod');
@@ -141,20 +166,14 @@ $(document).ready(function() {
     });
 
     $('#btnDelCatExe').click(function() {
+        var btn = this;
         $("#sltCatDel option:selected").each(function() {
             var idCatSel = $(this).val();
             var value = $(this).text();
             if (idCatSel !== "0") {
-                $.post('home', {idCat: idCatSel, action: 'CatDel'},
-                function(responseText) {
-                    if (responseText === "ok") {
-                        showMsg('#msgDelCat', 'success', 'Se ha borrado la categoría: "' + value + '"')
-                        $('#desCatDel').html("Selecione una categoría");
-                        showCats("#sltCatDel");
-                    } else {
-                        showMsg('#msgDelCat', 'danger', 'Ocurrio un error al borrar la categoría: "' + value + '"')
-                    }
-                });
+                var valores = {idCat: idCatSel, action: 'CatDel'};
+                enviarDatos(valores, '#msgDelCat', btn, "La categoría \""+value+"\"", "elimino");
+                showCats("#sltCatDel");
             } else {
                 showMsgEmpty('#msgDelCat');
             }

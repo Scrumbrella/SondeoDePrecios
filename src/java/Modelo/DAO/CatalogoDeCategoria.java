@@ -1,5 +1,3 @@
-
-
 package Modelo.DAO;
 
 import Hibernate.HibernateUtil;
@@ -16,42 +14,43 @@ import org.hibernate.Transaction;
  * @author Nahum
  */
 public class CatalogoDeCategoria {
-    ArrayList<Categoria> categorias;
-    
+
+    private ArrayList<Categoria> categorias;
+
     public CatalogoDeCategoria() {
     }
-    
-   public Categoria validarCategoria(Categoria cat){
-       return cat;
-   }
-    
-    public String addCategoria(Categoria categoria){
-       String res;
+
+    public Categoria validarCategoria(Categoria cat) {
+        return cat;
+    }
+
+    public boolean addCategoria(Categoria categoria) {
+        boolean res;
         SessionFactory sf;
         Session session;
         Transaction tx = null;
-        try{
+        try {
             sf = HibernateUtil.getSessionFactory();
             session = sf.openSession();
             tx = session.beginTransaction();
             session.save(categoria);
             tx.commit();
             session.close();
-            res = "se ingreso correctamente";
-        }catch(HibernateException ex){
-            if(tx != null)
+            res = true;
+        } catch (HibernateException ex) {
+            if (tx != null) 
                 tx.rollback();
-            res = "no se ingreso";
+            res = false;
         }
         return res;
     }
-    
-    public boolean eliminarCategoria(Categoria categoria){
+
+    public boolean eliminarCategoria(Categoria categoria) {
         boolean res;
         SessionFactory sf;
         Session session;
         Transaction tx = null;
-        try{
+        try {
             sf = HibernateUtil.getSessionFactory();
             session = sf.openSession();
             tx = session.beginTransaction();
@@ -59,45 +58,47 @@ public class CatalogoDeCategoria {
             tx.commit();
             session.close();
             res = true;
-        }catch(HibernateException ex){
-            if(tx != null)
+        } catch (HibernateException ex) {
+            if (tx != null) {
                 tx.rollback();
+            }
             res = false;
         }
         return res;
     }
-    
-    public String modificarCategoria(Categoria categoria){
-        String res;
+
+    public boolean modificarCategoria(Categoria categoria) {
+        boolean res;
         SessionFactory sf;
         Session session;
         Transaction tx = null;
-        try{
+        try {
             sf = HibernateUtil.getSessionFactory();
             session = sf.openSession();
             tx = session.beginTransaction();
             session.update(categoria);
             tx.commit();
             session.close();
-            res = "se modifico correctamente";
-        }catch(HibernateException ex){
-            if(tx != null)
+            res = true;
+        } catch (HibernateException ex) {
+            if (tx != null) {
                 tx.rollback();
-            res = "no se modifico";
+            }
+            res = false;
         }
         return res;
     }
-    
-    public ArrayList<Categoria> getCategorias(){
+
+    public ArrayList<Categoria> getCategorias() {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
         Query consulta = session.createQuery("from Categoria");
-        ArrayList<Categoria> lista = (ArrayList<Categoria>) consulta.list();
+        this.categorias = (ArrayList<Categoria>) consulta.list();
         session.close();
-        return lista;
+        return this.categorias;
     }
-    
-    public Categoria getCategoria(int idCategoria){
+
+    public Categoria getCategoria(int idCategoria) {
         SessionFactory sf;
         Session session;
         sf = HibernateUtil.getSessionFactory();
@@ -106,24 +107,16 @@ public class CatalogoDeCategoria {
         session.close();
         return cat;
     }
-    
-    public String validarNombre(String nombre, boolean verExiste){
-        boolean valido = nombre.matches("[a-zA-Z ñáéíóú]*");
-        String res ="EsValido";
-        if(valido){
-            if (verExiste) {
-                this.categorias = getCategorias();
-                for (Categoria categoria : categorias) {
-                    if (categoria.getNombre().equalsIgnoreCase(nombre)) {
-                        res = "ya existe";
-                        break;
-                    }
-                }
-            }
-        }else{
-            res = "tiene el nombre invalido";
-        }
+
+    public boolean noExisteCategoria(String nombre) {
+        Session sesion;
+        boolean res;
+        sesion = Hibernate.HibernateUtil.getSessionFactory().openSession();
+        String hql = "FROM Categoria WHERE nombre='" + nombre+"'";
+        Query consulta = sesion.createQuery(hql);
+        res = consulta.list().isEmpty();
+        sesion.close();
         return res;
     }
-    
+
 }

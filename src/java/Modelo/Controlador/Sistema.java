@@ -7,8 +7,12 @@ import Modelo.Producto;
 import Modelo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,27 +52,23 @@ public class Sistema extends HttpServlet {
     private void processRequestGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration<String> parametros = request.getParameterNames();
         RequestDispatcher rd;
-
         if (!parametros.hasMoreElements()) {
-            request.setAttribute("valido", "ok");
             request.setAttribute("titulo", ".::Bienvenido::.");
             HttpSession sesion = request.getSession(true);
             Usuario us = (Usuario) sesion.getAttribute("usuario");
             request.setAttribute("usuario", us);
             rd = request.getRequestDispatcher("/index.jsp");
+            request.setAttribute("valido", "ok");
             rd.forward(request, response);
         }
     }
 
     private void eliminarCategoria(int idCategoria, PrintWriter out) {
-        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        Categoria cat = catalogo.getCategoria(idCategoria);
-        boolean hecho = catalogo.eliminarCategoria(cat);
-        if (hecho) {
-            out.print("ok");
-        } else {
-            out.print("fail");
-        }
+        this.catCategoria = new CatalogoDeCategoria();
+        Categoria cat = this.catCategoria.getCategoria(idCategoria);
+        boolean hecho = this.catCategoria.eliminarCategoria(cat);
+        String res = (hecho) ? "1" : "0";
+        out.print(res);
     }
 
     private void mostrarCategorias(PrintWriter out) {
@@ -76,86 +76,71 @@ public class Sistema extends HttpServlet {
         ArrayList<Categoria> lista = catalogo.getCategorias();
         String option = "<option  value=\"0\">Selecionar...</option>";
         for (Categoria categoria : lista) {
-            option += "<option value=\"" + categoria.getIdcategoria() + "\">" + categoria.getNombre() + "</option>";
+            try {
+                String nombre = new String(categoria.getNombre().getBytes("utf-8"));
+                option += "<option value=\"" + categoria.getIdcategoria() + "\">" + nombre + "</option>";
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         out.println(option);
     }
 
     private void addCategoria(String nombre, String descripcion, PrintWriter out) {
         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        String hecho = catalogo.validarNombre(nombre, true);
-        if (hecho.equals("EsValido")) {
+        boolean hecho = catalogo.noExisteCategoria(nombre);
+        String res = "2";
+        if (hecho) {
             hecho = catalogo.addCategoria(new Categoria(nombre, descripcion));
+            res = (hecho) ? "1" : "0";
         }
-
-        String tipo = "info";
-        switch (hecho) {
-            case "ya existe":
-                tipo = "danger";
-                break;
-            case "":
-                tipo = "warning";
-                break;
-            case "se ingreso correctamente":
-                tipo = "success";
-                break;
-            case "no se ingreso":
-                tipo = "danger";
-                break;
-        }
-        String mensaje = "<div class=\"alert alert-dismissable alert-" + tipo + "\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">*</button>"
-                + "La Categor&iacute;a: \"" + nombre + "\" " + hecho + "</div>";
-        out.println(mensaje);
+        out.print(res);
     }
 
-    private void seleccionarCategoria(int idCategoria, PrintWriter out) {
+    private void getDescCategoria(int idCategoria, PrintWriter out) {
         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
         out.print(catalogo.getCategoria(idCategoria).getDescripcion());
     }
 
-    private void modificarCategoria(String nombre, String descripcion, int idCategoria, PrintWriter out) {
+    private void modificarCategoria(HttpServletRequest request, PrintWriter out) {
+        int idCat = Integer.parseInt(request.getParameter("idCat"));
+        String nombre, descripcion;
+        nombre = request.getParameter("nombre");
+        descripcion = request.getParameter("descripcion");
         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        String hecho = catalogo.validarNombre(nombre, false);
-        if (hecho.equals("EsValido")) {
-            hecho = catalogo.modificarCategoria(new Categoria(idCategoria, nombre, descripcion));
-        }
-
-        String tipo = "info";
-        switch (hecho) {
-            case "ya existe":
-                tipo = "danger";
-                break;
-            case "":
-                tipo = "warning";
-                break;
-            case "se modifico correctamente":
-                tipo = "success";
-                break;
-            case "no se modifico":
-                tipo = "danger";
-                break;
-        }
-        String mensaje = "<div class=\"alert alert-dismissable alert-" + tipo + "\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">*</button>"
-                + "La Categor&iacute;a: \"" + nombre + "\" " + hecho + "</div>";
-        out.println(mensaje);
+        Categoria cat = new Categoria(idCat, nombre, descripcion);
+        boolean hecho = catalogo.modificarCategoria(cat);
+        String res = (hecho) ? "1" : "0";
+        out.print(res);
     }
 
-    private void selCat(int idCategoria, PrintWriter out) {
+    private void getNombDescCat(int idCategoria, PrintWriter out) {
         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
         Categoria cat = catalogo.getCategoria(idCategoria);
-        out.print(cat.getDescripcion() + "|" + cat.getNombre());
+        
+        try {
+            out.print(cat.getDescripcion() + "|" + new String(cat.getNombre().getBytes(), "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
-    private void addProducto(String nombre, String descripcion, String unidad, int idCategoria) {
-        CatalogoDeProductos catalogoPro = new CatalogoDeProductos();
-        boolean valido = catalogoPro.validarNombre(nombre);
+    private void nuevoProducto(HttpServletRequest request, PrintWriter out) {
+        String nombre, descripcion;
+        nombre = request.getParameter("nombre");
+        descripcion = request.getParameter("descripcion");
+        String unidad = request.getParameter("unidad");
+        boolean valido = this.catProducto.noExisteProducto(nombre);
+        String res = "2";
         if (valido) {
-            CatalogoDeCategoria catalogoCat = new CatalogoDeCategoria();
-            Categoria categoria = catalogoCat.getCategoria(idCategoria);
+            int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
+            Categoria categoria = this.catCategoria.getCategoria(idCategoria);
             Producto producto = new Producto(categoria, nombre, descripcion, unidad);
-            boolean hecho = catalogoPro.addProducto(producto);
+            boolean hecho = this.catProducto.addProducto(producto);
+            res = (hecho) ? "1" : "0";
         }
-
+        out.print(res);
     }
 
     private void processRequestPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -166,8 +151,6 @@ public class Sistema extends HttpServlet {
         RequestDispatcher rd;
         if (parametros.hasMoreElements()) {
             String accion = request.getParameter("action");
-            String nombre;
-            String descripcion;
             if (accion != null) {
                 switch (accion) {
                     case "newCat":
@@ -177,43 +160,21 @@ public class Sistema extends HttpServlet {
                         mostrarCategorias(out);
                         break;
                     case "descCatDel":
-                        seleccionarCategoria(Integer.parseInt(request.getParameter("idCat")), out);
+                        getDescCategoria(Integer.parseInt(request.getParameter("idCat")), out);
                         break;
                     case "CatDel":
                         eliminarCategoria(Integer.parseInt(request.getParameter("idCat")), out);
                         break;
                     case "getCatValues":
-                        selCat(Integer.parseInt(request.getParameter("idCat")), out);
+                        getNombDescCat(Integer.parseInt(request.getParameter("idCat")), out);
                         break;
                     case "CatMod":
-                        nombre = request.getParameter("nombre");
-                        descripcion = request.getParameter("descripcion");
-                        int idCat = Integer.parseInt(request.getParameter("idCat"));
-                        modificarCategoria(nombre, descripcion, idCat, out);
+                        modificarCategoria(request, out);
                         break;
                     case "newProd":
-                        nombre = request.getParameter("nombre");
-                        descripcion = request.getParameter("descripcion");
-                        String unidad = request.getParameter("unidad");
-                        boolean valido = catProducto.validarNombre(nombre);
-                        if (valido) {
-                            int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
-                            Categoria categoria = this.catCategoria.getCategoria(idCategoria);
-                            Producto producto = new Producto(categoria, nombre, descripcion, unidad);
-                            boolean hecho = this.catProducto.addProducto(producto);
-                            if (hecho) {
-                                out.print("Si");
-                            } else {
-                                out.print("no");
-                            }
-                        } else {
-                            out.print("No Valido");
-                        }
-
-                        //String //addProducto();
+                        nuevoProducto(request, out);
                         break;
                 }
-
             }
         } else {
             request.setAttribute("titulo", ".::Bienvenido::.");

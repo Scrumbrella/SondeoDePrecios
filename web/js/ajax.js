@@ -25,7 +25,7 @@ function procesarRespuesta(respuesta, recibe, cosa, accion) {
     switch (respuesta) {
         case '1':
             tipo = "success";
-            mensaje = "se "+accion+" correctamente";
+            mensaje = "se " + accion + " correctamente";
             break;
         case '2':
             tipo = "warning";
@@ -33,14 +33,14 @@ function procesarRespuesta(respuesta, recibe, cosa, accion) {
             break;
         case '0':
             tipo = "danger";
-            mensaje = "no se "+accion;
+            mensaje = "no se " + accion;
             break;
         default:
             tipo = "info";
             mensaje = "ocurrio un error";
-            
+
     }
-    showMsg(recibe, tipo, cosa + " " +mensaje);
+    showMsg(recibe, tipo, cosa + " " + mensaje);
 }
 
 function enviarDatos(valores, recibe, btn, cosa, accion) {
@@ -49,7 +49,7 @@ function enviarDatos(valores, recibe, btn, cosa, accion) {
         l.start();
         $.post('home', valores, function(responseText) {
             l.stop();
-            procesarRespuesta(responseText, recibe, cosa, accion)
+            procesarRespuesta(responseText, recibe, cosa, accion);
         });
     } else {
         showMsgEmpty(recibe);
@@ -71,12 +71,12 @@ $(document).ready(function() {
         var nombreVar = $('#frmNewNameProd').val();
         var descVar = $('#frmNewDescProd').val();
         var unidadVar;
-        $("#sltUniNewPro option:selected").each(function() {
+        $("#sltUniNewProd option:selected").each(function() {
             unidadVar = $(this).val();
+            console.log(unidadVar);
         });
-        console.log(unidadVar);
         var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, unidad: unidadVar, action: 'newProd'};
-        enviarDatos(datos, '#frmResNewPro', this, "El producto "+nombreVar, "ingreso");
+        enviarDatos(datos, '#frmResNewPro', this, "El producto \"" + nombreVar + "\"", "ingreso");
     });
 
     $('#btnSubmitNewCat').click(function(event) {
@@ -84,12 +84,16 @@ $(document).ready(function() {
         var nombreVarCat = $('#frmNewName').val();
         var descVarCat = $('#frmNewDesc').val();
         var datos = {frmNewName: nombreVarCat, frmNewDesc: descVarCat, action: 'newCat'};
-        enviarDatos(datos, '#datos', this, "La categoría "+nombreVarCat, "ingreso")
+        enviarDatos(datos, '#datos', this, "La categoría \"" + nombreVarCat + "\"", "ingreso");
     });
 
     $('#btnNewProdNav').click(function() {
         $('#frmNewProd').modal('show');
     });
+    $('#btnModProdNav').click(function() {
+        $('#frmModProd').modal('show');
+    });
+    
     $('#btnDelCat').click(function() {
         $('#frmDelCat').modal('show');
     });
@@ -154,7 +158,7 @@ $(document).ready(function() {
             var idCatSel = $(this).val();
             var datos = {idCat: idCatSel, nombre: newModName, descripcion: newModDesc, action: 'CatMod'};
             if (idCatSel !== "0") {
-                enviarDatos(datos, '#msgModCat', btn, "La categoría "+newModName, "modifico");
+                enviarDatos(datos, '#msgModCat', btn, "La categoría " + newModName, "modifico");
                 $('#frmModDesc').val("");
                 $('#frmModName').val("");
                 showCats('#sltcatMod');
@@ -165,14 +169,17 @@ $(document).ready(function() {
 
     });
 
-    $('#btnDelCatExe').click(function() {
+
+
+
+    $('#btnDelCatExes').click(function() {
         var btn = this;
         $("#sltCatDel option:selected").each(function() {
             var idCatSel = $(this).val();
             var value = $(this).text();
             if (idCatSel !== "0") {
                 var valores = {idCat: idCatSel, action: 'CatDel'};
-                enviarDatos(valores, '#msgDelCat', btn, "La categoría \""+value+"\"", "elimino");
+                enviarDatos(valores, '#msgDelCat', btn, "La categoría \"" + value + "\"", "elimino");
                 showCats("#sltCatDel");
             } else {
                 showMsgEmpty('#msgDelCat');
@@ -180,4 +187,20 @@ $(document).ready(function() {
         });
     });
 
-});                          
+});
+
+function delCatExe() {
+    var btn = document.getElementById('btnDelCatExe');
+    $("#sltCatDel option:selected").each(function() {
+        var idCatSel = $(this).val();
+        var value = $(this).text();
+        if (idCatSel !== "0") {
+            var valores = {idCat: idCatSel, action: 'CatDel'};
+            enviarDatos(valores, '#msgDelCat', btn, "La categoría \"" + value + "\"", "elimino");
+            showCats("#sltCatDel");
+        } else {
+            showMsgEmpty('#msgDelCat');
+        }
+    });
+
+}

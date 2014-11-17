@@ -8,7 +8,6 @@ import Modelo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -127,10 +126,10 @@ public class Sistema extends HttpServlet {
     }
 
     private void nuevoProducto(HttpServletRequest request, PrintWriter out) {
-        String nombre, descripcion;
+        String nombre, descripcion, unidad ;
         nombre = request.getParameter("nombre");
         descripcion = request.getParameter("descripcion");
-        String unidad = request.getParameter("unidad");
+        unidad = request.getParameter("unidad");
         boolean valido = this.catProducto.noExisteProducto(nombre);
         String res = "2";
         if (valido) {

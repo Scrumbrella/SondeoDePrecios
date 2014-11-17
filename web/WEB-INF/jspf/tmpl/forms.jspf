@@ -71,14 +71,14 @@
                                     <option value="lb">Libra (lb)</option>
                                 </optgroup>
                                 <optgroup label="Distancia">
-                                    <option value="km">kilometros</option>
-                                    <option value="m">metros</option>
-                                    <option value="cm" selected="">centimetros</option>
-                                    <option value="mm">milimetros</option>
-                                    <option value="mll">millas</option>
-                                    <option value="yrd">yardas</option>
-                                    <option value="ft">pies</option>
-                                    <option value="pulg">pulgadas </option>
+                                    <option value="km">Kilometros</option>
+                                    <option value="m">Metros</option>
+                                    <option value="cm">Centimetros</option>
+                                    <option value="mm">Milimetros</option>
+                                    <option value="mll">Millas</option>
+                                    <option value="yrd">Yardas</option>
+                                    <option value="ft">Pies</option>
+                                    <option value="pulg">Pulgadas </option>
                                 </optgroup>
                             </select>
                         </div>
@@ -102,6 +102,75 @@
     </div>
 </div>
 
+<!-- Modificar Producto -->
+<div class="modal fade" id="frmModProd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header success">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-info" id="myModalLabel">Modificar Producto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="well well-lg">
+                    <div id="frmResModPro"></div>
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="sltCatModProd">Seleccione una categoría:</label>
+                            <select id="sltCatModProd" class="form-control" >
+                                <option disable="true" value="0">....Cargando....</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sltUniModProd">Unidad Medida:</label>
+                            <select id="sltUniModProd" class="form-control" >
+                                <optgroup label="Comunes">
+                                    <option value="uni.">Unidades</option>
+                                </optgroup>
+                                <optgroup label="Volumen">
+                                    <option value="gal">Galones</option>
+                                    <option value="lt">Litros</option>
+                                    <option value="ml">Mililitros</option>
+                                    <option value="m3">Metros Cúbicos</option>
+                                    <option value="cm3">Centimetros Cúbicos</option>
+                                </optgroup>
+                                <optgroup label="Masa">
+                                    <option value="tons">Tonelada (t)</option>
+                                    <option value="kg">Kilogramo (kg)</option>
+                                    <option value="g">Gramo (g)</option>
+                                    <option value="mg">Miligramo (mg)</option>
+                                    <option value="lb">Libra (lb)</option>
+                                </optgroup>
+                                <optgroup label="Distancia">
+                                    <option value="km">Kilometros</option>
+                                    <option value="m">Metros</option>
+                                    <option value="cm">Centimetros</option>
+                                    <option value="mm">Milimetros</option>
+                                    <option value="mll">Millas</option>
+                                    <option value="yrd">Yardas</option>
+                                    <option value="ft">Pies</option>
+                                    <option value="pulg">Pulgadas </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="frmModNameProd">Nombre</label>
+                            <input type="text" id="frmModNameProd" class="form-control" required size="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="frmNewDescProd">Descripción</label>
+                            <textarea class="form-control" id="frmModDescProd" rows="2" cols="55" required></textarea>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success ladda-button" data-style="expand-right" id="btnSubmitModProd"><span class="ladda-label">Crear Producto</span></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Eliminar Categoria-->
 <div class="modal fade" id="frmDelCat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -135,7 +204,7 @@
             <div class="modal-footer">
 
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-danger ladda-button" data-style="expand-right"  id="btnDelCatExe">Eliminar Categoría</button>
+                <button type="button" class="btn btn-danger ladda-button confirmation-callback" data-style="expand-right"  id="btnDelCatExe">Eliminar Categoría</button>
             </div>
         </div>
     </div>

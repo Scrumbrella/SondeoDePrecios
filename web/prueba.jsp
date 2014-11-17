@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bootstrap-Confirmation Demo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Default options with datta toggle</h1>
+                    <pre>$('[data-toggle="confirmation"]').confirmation();</pre>
+                    <a href="#" class="btn btn-default" data-toggle="confirmation">Click me</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>With callback functions</h1>
+                    <pre>$('.confirmation-callback').confirmation({
+onConfirm: function(event) { alert('confirm') },
+onCancel: function(event) { alert('cancel') }
+});</pre>
+                    <a href="#" class="btn btn-default confirmation-callback">Click me</a>
+                </div>
+            </div>
+        </div>
+        <script src="js/jquery.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-confirmation.js"></script>
+        <script>
+            $('[data-toggle="confirmation"]').confirmation();
+            $('.confirmation-callback').confirmation({
+                onConfirm: function() {
+                    alert('confirm')
+                },
+                onCancel: function() {
+                    alert('cancel')
+                }
+            });
+        </script>
+    </body>
+</html>

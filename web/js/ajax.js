@@ -113,15 +113,16 @@ $(document).ready(function() {
 
     $('#btnSubmitModProd').click(function() {
         var idCat = $('#sltCatModProd').val();
-        if (idCat !== "0") {
-            var idProd = $('#sltProdSrchModProd').val();
-            var uni = $('#sltUniModProd').val();
-            var nombre = $('#frmModNameProd').val();
-            var desc = $('#frmModDescProd').val();
-            var datos = {action: 'modProd', idCat: idCat, unidad: uni, nombre: nombre, desc: desc, idProd: idProd};
-            enviarDatos(datos, '#frmResModProd', this, "El producto \"" + nombre + "\"", "modifico");
-        } else
-            showMsgEmpty('#frmResModProd');
+        var idProd = $('#sltProdSrchModProd').val();
+        var uni = $('#sltUniModProd').val();
+        var nombre = $('#frmModNameProd').val();
+        var desc = $('#frmModDescProd').val();
+        var datos = {action: 'modProd', idCat: idCat, unidad: uni, nombre: nombre, desc: desc, idProd: idProd};
+        enviarDatos(datos, '#frmResModProd', this, "El producto \"" + nombre + "\"", "modifico");
+        $('#sltProdSrchModProd').html('<option value="0" disable>Selecione una categor&iacute;a</option>');
+        $('#sltProdSrchModProd').prop("disabled", true);
+        gestNewValProd(true);
+        showCats('#sltCatSrchModProd');
 
     });
 
@@ -138,6 +139,10 @@ $(document).ready(function() {
     });
     $('#btnModProdNav').click(function() {
         $('#frmModProd').modal('show');
+    });
+
+    $('#btnDelProdNav').click(function() {
+        $('#frmDelProd').modal('show');
     });
 
     $('#btnDelCat').click(function() {
@@ -170,6 +175,12 @@ $(document).ready(function() {
         $('#msgDelCat').html(null);
         $('#desCatDel').html("Selecione una categoría");
         showCats('#sltCatDel');
+    });
+
+    $('#frmDelProd').on('show.bs.modal', function(e) {
+        $('#msgDelProd').html(null);
+        $('#descProdDel').html("Selecione una categoría");
+        showCats('#sltCatDelProd');
     });
 
     $('#sltCatDel').change(function() {
@@ -270,28 +281,12 @@ $(document).ready(function() {
     });
 
 
-
-
-    $('#btnDelCatExes').click(function() {
-        var btn = this;
-        $("#sltCatDel option:selected").each(function() {
-            var idCatSel = $(this).val();
-            var value = $(this).text();
-            if (idCatSel !== "0") {
-                var valores = {idCat: idCatSel, action: 'CatDel'};
-                enviarDatos(valores, '#msgDelCat', btn, "La categoría \"" + value + "\"", "elimino");
-                showCats("#sltCatDel");
-            } else {
-                showMsgEmpty('#msgDelCat');
-            }
-        });
-    });
-
     $("#frmModNameProd").limiter(100, $("#countNameModProd"));
 
     $("#frmModName").limiter(100, $("#countModNameCat"));
     $("#frmModDesc").limiter(200, $("#countModDescCat"));
     $("#frmModNameProd").limiter(100, $("#countNameModProd"));
+    $("#frmModDescProd").limiter(200, $("#countDescModProd"));
 
 
 });
@@ -309,6 +304,20 @@ function delCatExe() {
             showMsgEmpty('#msgDelCat');
         }
     });
+
+}
+
+function delProdExe() {
+    var btn = document.getElementById('btnDelProdExe');
+    var idProdSel = $("#sltProdDel").val();
+    var value = $("#sltProdDel").text();
+    if (idProdSel !== "0") {
+        var valores = {idCat: idProdSel, action: 'delProd'};
+        enviarDatos(valores, '#msgDelProd', btn, "El Producto \"" + value + "\"", "elimino");
+        showCats("#sltCatDel");
+    } else {
+        showMsgEmpty('#msgDelCat');
+    }
 
 }
 

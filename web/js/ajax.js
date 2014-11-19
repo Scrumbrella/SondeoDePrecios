@@ -37,7 +37,8 @@ function procesarRespuesta(respuesta, recibe, cosa, accion) {
             break;
         default:
             tipo = "info";
-            mensaje = "ocurrio un error";
+            cosa = "";
+            mensaje = "Ocurrio un error al procesar la petición";
 
     }
     showMsg(recibe, tipo, cosa + " " + mensaje);
@@ -104,13 +105,24 @@ $(document).ready(function() {
         var idCatVar = $('#sltCatNewProd').val();
         var nombreVar = $('#frmNewNameProd').val();
         var descVar = $('#frmNewDescProd').val();
-        var unidadVar;
-        $("#sltUniNewProd option:selected").each(function() {
-            unidadVar = $(this).val();
-            console.log(unidadVar);
-        });
+        var unidadVar = $("#sltUniNewProd").val();
         var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, unidad: unidadVar, action: 'newProd'};
         enviarDatos(datos, '#frmResNewPro', this, "El producto \"" + nombreVar + "\"", "ingreso");
+    });
+
+
+    $('#btnSubmitModProd').click(function() {
+        var idCat = $('#sltCatModProd').val();
+        if (idCat !== "0") {
+            var idProd = $('#sltProdSrchModProd').val();
+            var uni = $('#sltUniModProd').val();
+            var nombre = $('#frmModNameProd').val();
+            var desc = $('#frmModDescProd').val();
+            var datos = {action: 'modProd', idCat: idCat, unidad: uni, nombre: nombre, desc: desc, idProd: idProd};
+            enviarDatos(datos, '#frmResModProd', this, "El producto \"" + nombre + "\"", "modifico");
+        } else
+            showMsgEmpty('#frmResModProd');
+
     });
 
     $('#btnSubmitNewCat').click(function(event) {

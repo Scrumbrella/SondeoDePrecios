@@ -11,14 +11,8 @@
         <property name="nombre1" type="string">
             <column name="NOMBRE1" length="100" not-null="true" />
         </property>
-        <property name="nombre2" type="string">
-            <column name="NOMBRE2" length="100" not-null="true" />
-        </property>
         <property name="apellido1" type="string">
             <column name="APELLIDO1" length="100" not-null="true" />
-        </property>
-        <property name="apellido2" type="string">
-            <column name="APELLIDO2" length="100" not-null="true" />
         </property>
         <property name="pass" type="string">
             <column name="PASS" length="128" not-null="true" />

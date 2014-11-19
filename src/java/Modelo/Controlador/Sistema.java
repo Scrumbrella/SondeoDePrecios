@@ -169,6 +169,9 @@ public class Sistema extends HttpServlet {
                     case "getDataProd":
                         getDataProd(request, out);
                         break;
+                    case "modProd":
+                        modProd(request, out);
+                        break;
                 }
             }
         } else {
@@ -239,6 +242,21 @@ public class Sistema extends HttpServlet {
         Producto prod = this.catProducto.getProducto(idProd);
         out.print(prod.getIdCategoria() + "|" + prod.getUnidadMedida() + "|" + prod.getNombre() + "|" + prod.getDescripcion());
 
+    }
+
+    private void modProd(HttpServletRequest request, PrintWriter out) {
+        int idCat = Integer.parseInt(request.getParameter("idCat"));
+        int idPro = Integer.parseInt(request.getParameter("idProd"));
+        String nombre = request.getParameter("nombre");
+        String desc = request.getParameter("desc");
+        String unidad = request.getParameter("unidad");
+        this.catCategoria = new CatalogoDeCategoria();
+        this.catProducto = new CatalogoDeProductos();
+        Categoria cat = this.catCategoria.getCategoria(idCat);
+        Producto prod = new Producto(idPro, cat, nombre, desc, unidad);
+        boolean res = this.catProducto.modificarProducto(prod);
+        String respuesta = (res) ? "1" : "0";
+        out.print(respuesta);
     }
 
 }

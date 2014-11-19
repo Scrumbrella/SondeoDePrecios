@@ -202,7 +202,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success ladda-button" data-style="expand-right" id="btnSubmitModProd"><span class="ladda-label">Crear Producto</span></button>
+                <button type="button" class="btn btn-warning ladda-button" data-style="expand-right" id="btnSubmitModProd"><span class="ladda-label">Modificar Producto</span></button>
             </div>
         </div>
     </div>
@@ -237,10 +237,9 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <div class="modal-footer">                
                 <button type="button" class="btn btn-danger ladda-button confirmation-callback" data-style="expand-right"  id="btnDelCatExe">Eliminar Categoría</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

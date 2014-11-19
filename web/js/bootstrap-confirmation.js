@@ -48,7 +48,7 @@
     if (!$.fn.popover || !$.fn.tooltip)
         throw new Error('Confirmation requires popover.js and tooltip.js');
     Confirmation.DEFAULTS = $.extend({}, $.fn.popover.Constructor.DEFAULTS, {
-        placement: 'left',
+        placement: 'top',
         title: 'Esta seguro?',
         btnOkClass: 'btn btn-sm btn-danger',
         btnOkLabel: 'Continuar',

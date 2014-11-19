@@ -1,4 +1,3 @@
-
 package Modelo.DAO;
 
 import Hibernate.HibernateUtil;
@@ -16,24 +15,25 @@ import org.hibernate.Transaction;
  * @author Nahum
  */
 public class CatalogoDeProductos {
+
     private ArrayList<Producto> productos;
-    
+
     public boolean noExisteProducto(String nombre) {
         Session sesion;
         boolean res;
         sesion = Hibernate.HibernateUtil.getSessionFactory().openSession();
-        String hql = "FROM Producto WHERE nombre='" + nombre+"'";
+        String hql = "FROM Producto WHERE nombre='" + nombre + "'";
         Query consulta = sesion.createQuery(hql);
         res = consulta.list().isEmpty();
         sesion.close();
         return res;
     }
-    
-    public boolean esValido(String nombre){
+
+    public boolean esValido(String nombre) {
         return nombre.matches("[a-zA-Z ñáéíóú]*");
     }
-    
-    public ArrayList<Producto> getProductos(){
+
+    public ArrayList<Producto> getProductos() {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
         Query consulta = session.createQuery("from Producto");
@@ -41,14 +41,13 @@ public class CatalogoDeProductos {
         session.close();
         return lista;
     }
-    
-  
-    public boolean addProducto(Producto producto){
+
+    public boolean addProducto(Producto producto) {
         boolean res;
         SessionFactory sf;
         Session session;
         Transaction tx = null;
-        try{
+        try {
             sf = HibernateUtil.getSessionFactory();
             session = sf.openSession();
             tx = session.beginTransaction();
@@ -56,27 +55,44 @@ public class CatalogoDeProductos {
             tx.commit();
             session.close();
             res = true;
-        }catch(HibernateException ex){
-            if(tx != null)
+        } catch (HibernateException ex) {
+            if (tx != null) {
                 tx.rollback();
+            }
             res = false;
         }
         return res;
     }
-    
-    public boolean eliminarProducto(int idProducto){
+
+    public boolean eliminarProducto(int idProducto) {
         return false;
     }
-    
-    public Producto getProducto(int idProducto){
+
+    public Producto getProducto(int idProducto) {
         Session session;
         session = HibernateUtil.getSessionFactory().openSession();
         Producto prod = (Producto) session.get(Producto.class, idProducto);
         session.close();
         return prod;
     }
-    
-    public boolean modificarProducto(int idProducto, int idCategoria, String nombre, String descripcion, String unidad){
-        return false;
+
+    public boolean modificarProducto(Producto producto) {
+        boolean res;
+        Session session;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.update(producto);
+            tx.commit();
+            session.close();
+            res = true;
+        } catch (HibernateException ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            res = false;
+        }
+        return res;
     }
 }

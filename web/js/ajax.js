@@ -63,6 +63,40 @@ function showCats(recibe) {
     });
 }
 
+function gestNewValProd(estado) {
+    if (estado === true) {
+        $('#sltCatModProd').val(0);
+        $('#sltUniModProd').val(1);
+        $('#frmModNameProd').val(null);
+        $('#frmModDescProd').val(null);
+
+    }
+    $('#sltCatModProd').prop('disabled', estado);
+    $('#sltUniModProd').prop('disabled', estado);
+    $('#frmModNameProd').prop('disabled', estado);
+    $('#frmModDescProd').prop('disabled', estado);
+
+}
+
+(function($) {
+    $.fn.extend({
+        limiter: function(limit, elem) {
+            $(this).on("change focus keyup", function() {
+                setCount(this, elem);
+            });
+            function setCount(src, elem) {
+                var chars = src.value.length;
+                if (chars > limit) {
+                    src.value = src.value.substr(0, limit);
+                    chars = limit;
+                }
+                elem.html(limit - chars);
+            }
+            setCount($(this)[0], elem);
+        }
+    });
+})(jQuery);
+
 $(document).ready(function() {
 
     $('#btnSubmitNewProd').click(function(event) {
@@ -93,7 +127,7 @@ $(document).ready(function() {
     $('#btnModProdNav').click(function() {
         $('#frmModProd').modal('show');
     });
-    
+
     $('#btnDelCat').click(function() {
         $('#frmDelCat').modal('show');
     });
@@ -107,9 +141,17 @@ $(document).ready(function() {
 
     $('#frmModCat').on('show.bs.modal', function(e) {
         $('#msgModCat').html(null);
-        $('#frmModDesc').val("");
-        $('#frmModName').val("");
+        $('#frmModDesc').val(null);
+        $('#frmModName').val(null);
         showCats('#sltcatMod');
+    });
+
+    $('#frmModProd').on('show.bs.modal', function() {
+        showCats('#sltCatSrchModProd');
+        showCats('#sltCatModProd');
+        $('#sltProdSrchModProd').html('<option value="0" disable>Selecione una categor&iacute;a</option>');
+        $('#sltProdSrchModProd').prop("disabled", true);
+        gestNewValProd(true);
     });
 
     $('#frmDelCat').on('show.bs.modal', function(e) {
@@ -147,7 +189,53 @@ $(document).ready(function() {
                 $('#frmModDesc').val("");
                 $('#frmModName').val("");
             }
+            $("#frmNewName").limiter(100, $("#countNewNameCat"));
+            $("#frmNewDesc").limiter(200, $("#countNewDescCat"));
         });
+    });
+
+    $('#sltProdSrchModProd').change(function() {
+        var idProdSel = $(this).val();
+        if (idProdSel !== "0") {
+            gestNewValProd(false);
+            $.post('home', {action: 'getDataProd', idProd: idProdSel}, function(res) {
+                var datos = res.split("|");
+                $('#sltCatModProd').val(datos[0]);
+                $('#sltUniModProd').val(datos[1]);
+                $('#frmModNameProd').val(datos[2]);
+                $('#frmModDescProd').val(datos[3]);
+            });
+        } else {
+            gestNewValProd(true);
+        }
+
+    });
+
+    $('#sltCatSrchModProd').change(function() {
+        var idCatSel = $(this).val();
+        $('#sltProdSrchModProd').html('<option value="0" disable>.::Seleccione una categor&iacute;a::.</option>');
+        $('#sltProdSrchModProd').prop("disabled", true);
+        gestNewValProd(true);
+        if (idCatSel !== "0")
+            $.post('home', {action: 'getCatProd', idCat: idCatSel}, function(res) {
+                var datos = res.split("|");
+                var i, linea, options;
+                if (datos.length > 1) {
+                    options = '<option value="0" disable>Seleccionar...</option>';
+                    $('#sltProdSrchModProd').prop("disabled", false);
+                    for (i = 0; i < datos.length - 1; i++) {
+                        linea = datos[i].split("*");
+                        options += '<option value="' + linea[0] + '">' + linea[1] + '</option>';
+                    }
+
+                } else {
+                    options = '<option value="0" disable>No hay productos</option>';
+                    $('#sltProdSrchModProd').prop("disabled", true);
+                    gestNewValProd(true);
+                }
+                $('#sltProdSrchModProd').html(options);
+            });
+
     });
 
     $('#btnFrmModCatExe').click(function() {
@@ -187,6 +275,13 @@ $(document).ready(function() {
         });
     });
 
+    $("#frmModNameProd").limiter(100, $("#countNameModProd"));
+
+    $("#frmModName").limiter(100, $("#countModNameCat"));
+    $("#frmModDesc").limiter(200, $("#countModDescCat"));
+    $("#frmModNameProd").limiter(100, $("#countNameModProd"));
+
+
 });
 
 function delCatExe() {
@@ -204,3 +299,9 @@ function delCatExe() {
     });
 
 }
+
+$(function() {
+    $('#btn').click(function() {
+        $('#slt').val("val3");
+    });
+});

@@ -69,7 +69,11 @@ public class CatalogoDeProductos {
     }
     
     public Producto getProducto(int idProducto){
-        return null;
+        Session session;
+        session = HibernateUtil.getSessionFactory().openSession();
+        Producto prod = (Producto) session.get(Producto.class, idProducto);
+        session.close();
+        return prod;
     }
     
     public boolean modificarProducto(int idProducto, int idCategoria, String nombre, String descripcion, String unidad){

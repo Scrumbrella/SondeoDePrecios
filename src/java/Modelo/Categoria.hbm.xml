@@ -13,7 +13,7 @@
     <property name="descripcion" type="string">
       <column length="200" name="DESCRIPCION" not-null="true"/>
     </property>
-    <set fetch="select" inverse="true" lazy="true" name="productos" table="PRODUCTO">
+    <set fetch="select" inverse="true" lazy="false" name="productos" table="PRODUCTO">
       <key>
         <column name="IDCATEGORIA_FK" not-null="true" precision="10" scale="0"/>
       </key>

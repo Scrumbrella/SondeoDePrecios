@@ -75,12 +75,7 @@ public class Sistema extends HttpServlet {
         ArrayList<Categoria> lista = catalogo.getCategorias();
         String option = "<option  value=\"0\">Selecionar...</option>";
         for (Categoria categoria : lista) {
-            try {
-                String nombre = new String(categoria.getNombre().getBytes("utf-8"));
-                option += "<option value=\"" + categoria.getIdcategoria() + "\">" + nombre + "</option>";
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            option += "<option value=\"" + categoria.getIdcategoria() + "\">" + categoria.getNombre() + "</option>";
         }
         out.println(option);
     }
@@ -98,7 +93,7 @@ public class Sistema extends HttpServlet {
 
     private void getDescCategoria(int idCategoria, PrintWriter out) {
         CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        out.print(catalogo.getCategoria(idCategoria).getDescripcion());
+        out.println(catalogo.getCategoria(idCategoria).getDescripcion());
     }
 
     private void modificarCategoria(HttpServletRequest request, PrintWriter out) {
@@ -114,19 +109,14 @@ public class Sistema extends HttpServlet {
     }
 
     private void getNombDescCat(int idCategoria, PrintWriter out) {
-        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        Categoria cat = catalogo.getCategoria(idCategoria);
-        
-        try {
-            out.print(cat.getDescripcion() + "|" + new String(cat.getNombre().getBytes(), "UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        this.catCategoria = new CatalogoDeCategoria();
+        Categoria cat = this.catCategoria.getCategoria(idCategoria);
+        out.print(cat.getDescripcion() + "|" + cat.getNombre());
+
     }
 
     private void nuevoProducto(HttpServletRequest request, PrintWriter out) {
-        String nombre, descripcion, unidad ;
+        String nombre, descripcion, unidad;
         nombre = request.getParameter("nombre");
         descripcion = request.getParameter("descripcion");
         unidad = request.getParameter("unidad");
@@ -172,6 +162,12 @@ public class Sistema extends HttpServlet {
                         break;
                     case "newProd":
                         nuevoProducto(request, out);
+                        break;
+                    case "getCatProd":
+                        getCatProd(request, out);
+                        break;
+                    case "getDataProd":
+                        getDataProd(request, out);
                         break;
                 }
             }
@@ -229,5 +225,20 @@ public class Sistema extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void getCatProd(HttpServletRequest request, PrintWriter out) {
+        int idCat = Integer.parseInt(request.getParameter("idCat"));
+        this.catCategoria = new CatalogoDeCategoria();
+        Categoria cat = this.catCategoria.getCategoria(idCat);
+        out.print(cat.getProds());
+    }
+
+    private void getDataProd(HttpServletRequest request, PrintWriter out) {
+        int idProd = Integer.parseInt(request.getParameter("idProd"));
+        this.catProducto = new CatalogoDeProductos();
+        Producto prod = this.catProducto.getProducto(idProd);
+        out.print(prod.getIdCategoria() + "|" + prod.getUnidadMedida() + "|" + prod.getNombre() + "|" + prod.getDescripcion());
+
+    }
 
 }

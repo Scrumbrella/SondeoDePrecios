@@ -12,11 +12,11 @@
                     <div id="datos"></div>
                     <form role="form" id="fNC">
                         <div class="form-group">
-                            <label for="frmNewName">Nombre</label>
+                            <label for="frmNewName">Nombre <span class="badge" id="countNewNameCat">100</span></label>
                             <input type="text" id="frmNewName" name="frmNewName" class="form-control" required size="100">
                         </div>
                         <div class="form-group float-label-control">
-                            <label for="frmNewDesc">Descripción</label>
+                            <label for="frmNewDesc">Descripción <span class="badge" id="countNewDescCat">200</span></label>
                             <textarea class="form-control" id="frmNewDesc" name="frmNewDesc" rows="2" cols="55" required></textarea>
                         </div>
                     </form>
@@ -103,65 +103,101 @@
 </div>
 
 <!-- Modificar Producto -->
-<div class="modal fade" id="frmModProd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade " id="frmModProd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header success">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title text-info" id="myModalLabel">Modificar Producto</h4>
             </div>
             <div class="modal-body">
-                <div class="well well-lg">
-                    <div id="frmResModPro"></div>
-                    <form role="form">
-                        <div class="form-group">
-                            <label for="sltCatModProd">Seleccione una categoría:</label>
-                            <select id="sltCatModProd" class="form-control" >
-                                <option disable="true" value="0">....Cargando....</option>
-                            </select>
+                <div id="frmResModProd"></div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Buscar Producto</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label for="sltCatSrchModProd">Seleccionar categor&iacute;a:</label>
+                                        <select id="sltCatSrchModProd" class="form-control">
+                                            <option value="0">.::Cargando::.</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sltProdSrchModProd">Seleccione un producto:</label>
+                                        <select id="sltProdSrchModProd" class="form-control" >
+                                            <option disable="true" value="0">....Cargando....</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="sltUniModProd">Unidad Medida:</label>
-                            <select id="sltUniModProd" class="form-control" >
-                                <optgroup label="Comunes">
-                                    <option value="uni.">Unidades</option>
-                                </optgroup>
-                                <optgroup label="Volumen">
-                                    <option value="gal">Galones</option>
-                                    <option value="lt">Litros</option>
-                                    <option value="ml">Mililitros</option>
-                                    <option value="m3">Metros Cúbicos</option>
-                                    <option value="cm3">Centimetros Cúbicos</option>
-                                </optgroup>
-                                <optgroup label="Masa">
-                                    <option value="tons">Tonelada (t)</option>
-                                    <option value="kg">Kilogramo (kg)</option>
-                                    <option value="g">Gramo (g)</option>
-                                    <option value="mg">Miligramo (mg)</option>
-                                    <option value="lb">Libra (lb)</option>
-                                </optgroup>
-                                <optgroup label="Distancia">
-                                    <option value="km">Kilometros</option>
-                                    <option value="m">Metros</option>
-                                    <option value="cm">Centimetros</option>
-                                    <option value="mm">Milimetros</option>
-                                    <option value="mll">Millas</option>
-                                    <option value="yrd">Yardas</option>
-                                    <option value="ft">Pies</option>
-                                    <option value="pulg">Pulgadas </option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="frmModNameProd">Nombre</label>
-                            <input type="text" id="frmModNameProd" class="form-control" required size="100">
-                        </div>
-                        <div class="form-group">
-                            <label for="frmNewDescProd">Descripción</label>
-                            <textarea class="form-control" id="frmModDescProd" rows="2" cols="55" required></textarea>
-                        </div>
-                    </form>
+                    </div>
+                    
+                    <div class="col-xs-12 col-md-8">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Nuevos valores</h3>
+                            </div>
+                            <div class="panel-body">
 
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label for="sltCatModProd">Seleccione una categoría:</label>
+                                        <select id="sltCatModProd" class="form-control" >
+                                            <option disable="true" value="0">....Cargando....</option>
+                                        </select>
+                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sltUniModProd">Unidad Medida:</label>
+                                        <select id="sltUniModProd" class="form-control" >
+                                            <optgroup label="Comunes">
+                                                <option value="uni.">Unidades</option>
+                                            </optgroup>
+                                            <optgroup label="Volumen">
+                                                <option value="gal">Galones</option>
+                                                <option value="lt">Litros</option>
+                                                <option value="ml">Mililitros</option>
+                                                <option value="m3">Metros Cúbicos</option>
+                                                <option value="cm3">Centimetros Cúbicos</option>
+                                            </optgroup>
+                                            <optgroup label="Masa">
+                                                <option value="tons">Tonelada (t)</option>
+                                                <option value="kg">Kilogramo (kg)</option>
+                                                <option value="g">Gramo (g)</option>
+                                                <option value="mg">Miligramo (mg)</option>
+                                                <option value="lb">Libra (lb)</option>
+                                            </optgroup>
+                                            <optgroup label="Distancia">
+                                                <option value="km">Kilometros</option>
+                                                <option value="m">Metros</option>
+                                                <option value="cm">Centimetros</option>
+                                                <option value="mm">Milimetros</option>
+                                                <option value="mll">Millas</option>
+                                                <option value="yrd">Yardas</option>
+                                                <option value="ft">Pies</option>
+                                                <option value="pulg">Pulgadas </option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="frmModNameProd">Nombre <span class="badge" id="countNameModProd">100</span></label>
+                                        <input type="text" id="frmModNameProd" class="form-control" required size="100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="frmNewDescProd">Descripción</label>
+                                        <textarea class="form-control" id="frmModDescProd" rows="2" cols="55" required></textarea>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -228,11 +264,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="frmModName">Nombre</label>
+                            <label for="frmModName">Nombre <span class="badge" id="countModNameCat">100</span></label>
                             <input type="text" id="frmModName" name="frmNewName" class="form-control" required size="100">
                         </div>
                         <div class="form-group float-label-control">
-                            <label for="frmModDesc">Descripción</label>
+                            <label for="frmModDesc">Descripción <span class="badge" id="countModDescCat">200</span></label>
                             <textarea class="form-control" id="frmModDesc" name="frmNewDesc" rows="3" cols="55" required></textarea>
                         </div>
                     </form>

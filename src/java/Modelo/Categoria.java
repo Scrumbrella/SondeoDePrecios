@@ -3,6 +3,7 @@ package Modelo;
 
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ public class Categoria  implements java.io.Serializable {
      private int idcategoria;
      private String nombre;
      private String descripcion;
-     private Set productos = new HashSet(0);
+     private Set productos = new HashSet();
 
     public Categoria() {
     }
@@ -57,6 +58,15 @@ public class Categoria  implements java.io.Serializable {
     
     public Set getProductos() {
         return this.productos;
+    }
+    
+    public String getProds(){
+        String res = "";
+        for (Object object : productos) {
+            Producto prod = (Producto) object;
+            res += prod.getIdproducto() + "*" +prod.getNombre() +"|";
+        }
+        return res;
     }
     public void setProductos(Set productos) {
         this.productos = productos;

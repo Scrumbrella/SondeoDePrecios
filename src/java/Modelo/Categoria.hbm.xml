@@ -8,10 +8,10 @@
       <generator class="increment"/>
     </id>
     <property name="nombre" type="string">
-      <column length="100" name="NOMBRE" not-null="true"/>
+      <column length="100" name="NOMBRE"/>
     </property>
     <property name="descripcion" type="string">
-      <column length="200" name="DESCRIPCION" not-null="true"/>
+      <column length="200" name="DESCRIPCION" />
     </property>
     <set fetch="select" inverse="true" lazy="false" name="productos" table="PRODUCTO">
       <key>

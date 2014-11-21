@@ -172,6 +172,9 @@ public class Sistema extends HttpServlet {
                     case "modProd":
                         modProd(request, out);
                         break;
+                    case "delProd":
+                        delProd(request, out);
+                        break;
                 }
             }
         } else {
@@ -257,6 +260,15 @@ public class Sistema extends HttpServlet {
         boolean res = this.catProducto.modificarProducto(prod);
         String respuesta = (res) ? "1" : "0";
         out.print(respuesta);
+    }
+
+    private void delProd(HttpServletRequest request, PrintWriter out) {
+        int idProd = Integer.parseInt(request.getParameter("idProd"));
+        this.catProducto = new CatalogoDeProductos();
+        String res = "2";
+        boolean sts = this.catProducto.eliminarProducto(idProd);
+        res = (sts) ? "1" : "0";
+        out.print(res);
     }
 
 }

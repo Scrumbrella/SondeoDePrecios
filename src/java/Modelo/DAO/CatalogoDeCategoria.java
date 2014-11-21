@@ -90,11 +90,11 @@ public class CatalogoDeCategoria {
     }
 
     public ArrayList<Categoria> getCategorias() {
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Query consulta = session.createQuery("from Categoria");
         this.categorias = (ArrayList<Categoria>) consulta.list();
         session.close();
+        this.categorias.sort(null);
         return this.categorias;
     }
 

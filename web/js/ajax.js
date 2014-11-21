@@ -3,12 +3,17 @@ function arrayVacio(miArray) {
     var i;
     var res = false;
     for (i in miArray) {
-        if (miArray[i] === "") {
+        if (miArray[i] === "" || miArray[i] == "0") {
             res = true;
             break;
         }
     }
     return res;
+}
+
+function valNombre(nombre) {
+    var reg = /^([a-z ñáéíóú]{2,100})$/i;
+    return reg.test(nombre);
 }
 
 function showMsgEmpty(id) {
@@ -64,18 +69,18 @@ function showCats(recibe) {
     });
 }
 
-function gestNewValProd(estado) {
+function gestNewValProd(estado, accion) {
     if (estado === true) {
-        $('#sltCatModProd').val(0);
-        $('#sltUniModProd').val(1);
-        $('#frmModNameProd').val(null);
-        $('#frmModDescProd').val(null);
+        $('#sltCat' + accion + 'Prod').val(0);
+        $('#sltUni' + accion + 'Prod').val(1);
+        $('#frm' + accion + 'NameProd').val(null);
+        $('#frm' + accion + 'DescProd').val(null);
 
     }
-    $('#sltCatModProd').prop('disabled', estado);
-    $('#sltUniModProd').prop('disabled', estado);
-    $('#frmModNameProd').prop('disabled', estado);
-    $('#frmModDescProd').prop('disabled', estado);
+    $('#sltCat' + accion + 'Prod').prop('disabled', estado);
+    $('#sltUni' + accion + 'Prod').prop('disabled', estado);
+    $('#frm' + accion + 'NameProd').prop('disabled', estado);
+    $('#frm' + accion + 'DescProd').prop('disabled', estado);
 
 }
 
@@ -102,12 +107,18 @@ $(document).ready(function() {
 
     $('#btnSubmitNewProd').click(function(event) {
         event.preventDefault();
-        var idCatVar = $('#sltCatNewProd').val();
         var nombreVar = $('#frmNewNameProd').val();
-        var descVar = $('#frmNewDescProd').val();
-        var unidadVar = $("#sltUniNewProd").val();
-        var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, unidad: unidadVar, action: 'newProd'};
-        enviarDatos(datos, '#frmResNewPro', this, "El producto \"" + nombreVar + "\"", "ingreso");
+        if (valNombre(nombreVar)) {
+            var idCatVar = $('#sltCatNewProd').val();
+            var descVar = $('#frmNewDescProd').val();
+            var idCatVar = $('#sltCatNewProd').val();
+            var descVar = $('#frmNewDescProd').val();
+            var unidadVar = $("#sltUniNewProd").val();
+            var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, unidad: unidadVar, action: 'newProd'};
+            enviarDatos(datos, '#frmResNewPro', this, "El producto \"" + nombreVar + "\"", "ingreso");
+        } else {
+            showMsg('#frmResNewPro', 'warning', 'El nombre tiene que contener solamente letras')
+        }
     });
 
 
@@ -121,7 +132,7 @@ $(document).ready(function() {
         enviarDatos(datos, '#frmResModProd', this, "El producto \"" + nombre + "\"", "modifico");
         $('#sltProdSrchModProd').html('<option value="0" disable>Selecione una categor&iacute;a</option>');
         $('#sltProdSrchModProd').prop("disabled", true);
-        gestNewValProd(true);
+        gestNewValProd(true, 'Mod');
         showCats('#sltCatSrchModProd');
 
     });
@@ -129,9 +140,16 @@ $(document).ready(function() {
     $('#btnSubmitNewCat').click(function(event) {
         event.preventDefault();
         var nombreVarCat = $('#frmNewName').val();
-        var descVarCat = $('#frmNewDesc').val();
-        var datos = {frmNewName: nombreVarCat, frmNewDesc: descVarCat, action: 'newCat'};
-        enviarDatos(datos, '#datos', this, "La categoría \"" + nombreVarCat + "\"", "ingreso");
+        if (valNombre(nombreVarCat)) {
+            var descVarCat = $('#frmNewDesc').val();
+            var datos = {frmNewName: nombreVarCat, frmNewDesc: descVarCat, action: 'newCat'};
+            enviarDatos(datos, '#datos', this, "La categoría \"" + nombreVarCat + "\"", "ingreso");
+            $("#frmNewName").val(null);
+            $("#frmNewDesc").val(null);
+        } else {
+            showMsg('#datos', 'warning', 'El nombre tiene que contener solamente letras');
+        }
+
     });
 
     $('#btnNewProdNav').click(function() {
@@ -168,7 +186,7 @@ $(document).ready(function() {
         showCats('#sltCatModProd');
         $('#sltProdSrchModProd').html('<option value="0" disable>Selecione una categor&iacute;a</option>');
         $('#sltProdSrchModProd').prop("disabled", true);
-        gestNewValProd(true);
+        gestNewValProd(true, 'Mod');
     });
 
     $('#frmDelCat').on('show.bs.modal', function(e) {
@@ -179,8 +197,8 @@ $(document).ready(function() {
 
     $('#frmDelProd').on('show.bs.modal', function(e) {
         $('#msgDelProd').html(null);
-        $('#descProdDel').html("Selecione una categoría");
-        showCats('#sltCatDelProd');
+        showCats('#sltCatSrchDelProd');
+        $('#sltProdSrchDelProd').prop("disable", true);
     });
 
     $('#sltCatDel').change(function() {
@@ -220,7 +238,7 @@ $(document).ready(function() {
     $('#sltProdSrchModProd').change(function() {
         var idProdSel = $(this).val();
         if (idProdSel !== "0") {
-            gestNewValProd(false);
+            gestNewValProd(false, 'Mod');
             $.post('home', {action: 'getDataProd', idProd: idProdSel}, function(res) {
                 var datos = res.split("|");
                 $('#sltCatModProd').val(datos[0]);
@@ -229,7 +247,7 @@ $(document).ready(function() {
                 $('#frmModDescProd').val(datos[3]);
             });
         } else {
-            gestNewValProd(true);
+            gestNewValProd(true, 'Mod');
         }
 
     });
@@ -238,7 +256,7 @@ $(document).ready(function() {
         var idCatSel = $(this).val();
         $('#sltProdSrchModProd').html('<option value="0" disable>.::Seleccione una categor&iacute;a::.</option>');
         $('#sltProdSrchModProd').prop("disabled", true);
-        gestNewValProd(true);
+        gestNewValProd(true, 'Mod');
         if (idCatSel !== "0")
             $.post('home', {action: 'getCatProd', idCat: idCatSel}, function(res) {
                 var datos = res.split("|");
@@ -254,35 +272,65 @@ $(document).ready(function() {
                 } else {
                     options = '<option value="0" disable>No hay productos</option>';
                     $('#sltProdSrchModProd').prop("disabled", true);
-                    gestNewValProd(true);
+                    gestNewValProd(true, 'Mod');
                 }
                 $('#sltProdSrchModProd').html(options);
             });
 
     });
 
-    $('#btnFrmModCatExe').click(function() {
-        var btn = this;
-        $("#sltcatMod option:selected").each(function() {
-            var newModDesc = $('#frmModDesc').val();
-            var newModName = $('#frmModName').val();
-            var idCatSel = $(this).val();
-            var datos = {idCat: idCatSel, nombre: newModName, descripcion: newModDesc, action: 'CatMod'};
-            if (idCatSel !== "0") {
-                enviarDatos(datos, '#msgModCat', btn, "La categoría " + newModName, "modifico");
-                $('#frmModDesc').val("");
-                $('#frmModName').val("");
-                showCats('#sltcatMod');
-            } else {
-                showMsg('#msgModCat', 'warning', "Seleccione una categoría a ser modificada");
-            }
-        });
+    $('#sltCatSrchDelProd').change(function() {
+        var idCatSel = $(this).val();
+        $('#sltProdSrchDelProd').html('<option value="0" disable>.::Seleccione una categor&iacute;a::.</option>');
+        $('#sltProdSrchDelProd').prop("disabled", true);
+        gestNewValProd(true, 'Del');
+        if (idCatSel !== "0")
+            $.post('home', {action: 'getCatProd', idCat: idCatSel}, function(res) {
+                var datos = res.split("|");
+                var i, linea, options;
+                if (datos.length > 1) {
+                    options = '';
+                    $('#sltProdSrchDelProd').prop("disabled", false);
+                    for (i = 0; i < datos.length - 1; i++) {
+                        linea = datos[i].split("*");
+                        options += '<option value="' + linea[0] + '">' + linea[1] + '</option>';
+                    }
+
+                } else {
+                    options = '<option value="0" disable>No hay productos</option>';
+                    $('#sltProdSrchDelProd').prop("disabled", true);
+                    gestNewValProd(true, 'Del');
+                }
+                $('#sltProdSrchDelProd').html(options);
+            });
 
     });
 
 
-    $("#frmModNameProd").limiter(100, $("#countNameModProd"));
 
+    $('#btnFrmModCatExe').click(function() {
+        var btn = this;
+        var newModName = $('#frmModName').val();
+        if (valNombre(newModName)) {
+            var newModDesc = $('#frmModDesc').val();
+            var idCatSel;
+            $("#sltcatMod option:selected").each(function() {
+                idCatSel = $(this).val();
+            });
+            var datos = {idCat: idCatSel, nombre: newModName, descripcion: newModDesc, action: 'CatMod'};
+            enviarDatos(datos, '#msgModCat', btn, "La categoría " + newModName, "modifico");
+            $('#frmModDesc').val("");
+            $('#frmModName').val("");
+            showCats('#sltcatMod');
+        }else{
+            showMsg('#msgModCat', 'warning', 'El nombre tiene que contener solamente letras');
+        }
+    });
+
+
+    $("#frmModNameProd").limiter(100, $("#countNameModProd"));
+    $("#frmNewName").limiter(100, $("#countNewNameCat"));
+    $("#frmNewDesc").limiter(200, $("#countNewDescCat"));
     $("#frmModName").limiter(100, $("#countModNameCat"));
     $("#frmModDesc").limiter(200, $("#countModDescCat"));
     $("#frmModNameProd").limiter(100, $("#countNameModProd"));
@@ -309,17 +357,20 @@ function delCatExe() {
 
 function delProdExe() {
     var btn = document.getElementById('btnDelProdExe');
-    var idProdSel = $("#sltProdDel").val();
-    var value = $("#sltProdDel").text();
-    if (idProdSel !== "0") {
-        var valores = {idCat: idProdSel, action: 'delProd'};
-        enviarDatos(valores, '#msgDelProd', btn, "El Producto \"" + value + "\"", "elimino");
-        showCats("#sltCatDel");
-    } else {
-        showMsgEmpty('#msgDelCat');
-    }
-
+    var idProd = $('#sltProdSrchDelProd').val();
+    var nombre;
+    $('#sltProdSrchDelProd option:selected').each(function() {
+        nombre = $(this).text();
+    });
+    console.log("idProducto:" + idProd);
+    var datos = {action: 'delProd', idProd: idProd};
+    enviarDatos(datos, '#msgDelProd', btn, "El producto \"" + nombre + "\"", "elimino");
+    $('#sltProdSrchDelProd').html('<option value="0" disable>Selecione una categor&iacute;a</option>');
+    $('#sltProdSrchDelProd').prop("disabled", true);
+    gestNewValProd(true, 'Del');
+    showCats('#sltCatSrchDelProd');
 }
+
 
 $(function() {
     $('#btn').click(function() {

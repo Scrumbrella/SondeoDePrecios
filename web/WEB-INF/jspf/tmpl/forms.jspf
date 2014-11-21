@@ -8,6 +8,23 @@
                 <h4 class="modal-title text-info" id="myModalLabel">Agregar Categoría</h4>
             </div>
             <div class="modal-body">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    Mostrar Categorías
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
                 <div class="well well-lg">
                     <div id="datos"></div>
                     <form role="form" id="fNC">
@@ -136,53 +153,58 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-xs-12 col-md-8">
                         <div class="panel panel-warning">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Nuevos valores</h3>
                             </div>
                             <div class="panel-body">
-
                                 <form role="form">
-                                    <div class="form-group">
-                                        <label for="sltCatModProd">Seleccione una categoría:</label>
-                                        <select id="sltCatModProd" class="form-control" >
-                                            <option disable="true" value="0">....Cargando....</option>
-                                        </select>
-                                        
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="sltUniModProd">Unidad Medida:</label>
-                                        <select id="sltUniModProd" class="form-control" >
-                                            <optgroup label="Comunes">
-                                                <option value="uni.">Unidades</option>
-                                            </optgroup>
-                                            <optgroup label="Volumen">
-                                                <option value="gal">Galones</option>
-                                                <option value="lt">Litros</option>
-                                                <option value="ml">Mililitros</option>
-                                                <option value="m3">Metros Cúbicos</option>
-                                                <option value="cm3">Centimetros Cúbicos</option>
-                                            </optgroup>
-                                            <optgroup label="Masa">
-                                                <option value="tons">Tonelada (t)</option>
-                                                <option value="kg">Kilogramo (kg)</option>
-                                                <option value="g">Gramo (g)</option>
-                                                <option value="mg">Miligramo (mg)</option>
-                                                <option value="lb">Libra (lb)</option>
-                                            </optgroup>
-                                            <optgroup label="Distancia">
-                                                <option value="km">Kilometros</option>
-                                                <option value="m">Metros</option>
-                                                <option value="cm">Centimetros</option>
-                                                <option value="mm">Milimetros</option>
-                                                <option value="mll">Millas</option>
-                                                <option value="yrd">Yardas</option>
-                                                <option value="ft">Pies</option>
-                                                <option value="pulg">Pulgadas </option>
-                                            </optgroup>
-                                        </select>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-6">
+                                            <div class="form-group">
+                                                <label for="sltCatModProd">Seleccione una categoría:</label>
+                                                <select id="sltCatModProd" class="form-control" >
+                                                    <option disable="true" value="0">....Cargando....</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6">
+                                            <div class="form-group">
+                                                <label for="sltUniModProd">Unidad Medida:</label>
+                                                <select id="sltUniModProd" class="form-control" >
+                                                    <optgroup label="Comunes">
+                                                        <option value="uni.">Unidades</option>
+                                                    </optgroup>
+                                                    <optgroup label="Volumen">
+                                                        <option value="gal">Galones</option>
+                                                        <option value="lt">Litros</option>
+                                                        <option value="ml">Mililitros</option>
+                                                        <option value="m3">Metros Cúbicos</option>
+                                                        <option value="cm3">Centimetros Cúbicos</option>
+                                                    </optgroup>
+                                                    <optgroup label="Masa">
+                                                        <option value="tons">Tonelada (t)</option>
+                                                        <option value="kg">Kilogramo (kg)</option>
+                                                        <option value="g">Gramo (g)</option>
+                                                        <option value="mg">Miligramo (mg)</option>
+                                                        <option value="lb">Libra (lb)</option>
+                                                    </optgroup>
+                                                    <optgroup label="Distancia">
+                                                        <option value="km">Kilometros</option>
+                                                        <option value="m">Metros</option>
+                                                        <option value="cm">Centimetros</option>
+                                                        <option value="mm">Milimetros</option>
+                                                        <option value="mll">Millas</option>
+                                                        <option value="yrd">Yardas</option>
+                                                        <option value="ft">Pies</option>
+                                                        <option value="pulg">Pulgadas </option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="frmModNameProd">Nombre <span class="badge" id="countNameModProd">100</span></label>
@@ -197,7 +219,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -217,27 +239,33 @@
                 <h4 class="modal-title text-danger" id="myModalLabel">Eliminar Producto</h4>
             </div>
             <div class="modal-body">
-                <div class="well well-lg">
-                    <div id="msgDelProd"></div>
-                    <h2 class="text-warning">Esta acción no se puede deshacer!</h2>
-                    <p class="text-danger">Nota: Se eliminará toda la información asociada a este producto.</p>
-                    <form role="form">
-                        <div class="form-group">
-                            <span class="help-block">Seleccione el producto a ser eliminado.</span>
-                            <select id="sltProdDel" name="sltCatDel">
-                                <option disable="true" value="0">....Cargando...</option>
-                            </select>
-                        </div>
-                    </form>
-                    <div class="panel panel-primary ">
-                        <div class="panel-heading">Descripción del producto:</div>
-                        <div class="panel-body" id="descProdDel">
-                            Seleccione un producto.
-                        </div>
+                <div id="msgDelProd"></div>
+                <h2 class="text-warning">Esta acción no se puede deshacer!</h2>
+                <p class="text-danger">Nota: Se eliminará toda la información asociada a este producto.</p>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p class="text-primary">Para eliminar un producto, por favor busquelo por categor&iacute;a</p>
+                        <form role="form">
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-md-6">
+                                    <label for="sltCatSrchDelProd">Seleccionar categor&iacute;a:</label>
+                                    <select id="sltCatSrchDelProd" class="form-control">
+                                        <option value="0">.::Cargando::.</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-xs-12 col-md-6">
+                                    <label for="sltProdSrchDelProd">Seleccione un producto:</label>
+                                    <select id="sltProdSrchDelProd" class="form-control" disable>
+                                        <option disable="true" value="0">Seleccione una categoría</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">                
+            <div class="modal-footer">
                 <button type="button" class="btn btn-danger ladda-button confirmation-callback" data-style="expand-right"  id="btnDelProdExe">Eliminar Producto</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>

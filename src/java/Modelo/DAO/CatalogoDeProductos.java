@@ -65,7 +65,23 @@ public class CatalogoDeProductos {
     }
 
     public boolean eliminarProducto(int idProducto) {
-        return false;
+        boolean res;
+        Session session;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.delete(getProducto(idProducto));
+            tx.commit();
+            session.close();
+            res = true;
+        } catch (HibernateException ex) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            res = false;
+        }
+        return res;
     }
 
     public Producto getProducto(int idProducto) {

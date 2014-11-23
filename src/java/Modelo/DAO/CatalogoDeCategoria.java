@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -91,10 +92,8 @@ public class CatalogoDeCategoria {
 
     public ArrayList<Categoria> getCategorias() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Query consulta = session.createQuery("from Categoria");
-        this.categorias = (ArrayList<Categoria>) consulta.list();
+        this.categorias = (ArrayList<Categoria>) session.createCriteria(Categoria.class).addOrder(Order.asc("nombre")).list();
         session.close();
-        this.categorias.sort(null);
         return this.categorias;
     }
 

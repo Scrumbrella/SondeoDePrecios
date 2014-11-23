@@ -6,4 +6,6 @@
   <table-filter match-name="PRODUCTO"/>
   <table-filter match-name="USUARIO"/>
   <table-filter match-name="ROL"/>
+  <table-filter match-name="ESTABLECIMIENTO"/>
+  <table-filter match-name="PRECIO"/>
 </hibernate-reverse-engineering>

@@ -12,7 +12,7 @@ function arrayVacio(miArray) {
 }
 
 function valNombre(nombre) {
-    var reg = /^([a-z ñáéíóú]{2,100})$/i;
+    var reg = /^([a-z ñáéíóú]{3,100})$/i;
     return reg.test(nombre);
 }
 
@@ -163,12 +163,28 @@ $(document).ready(function() {
         $('#frmDelProd').modal('show');
     });
 
+
+
+    $('#btnNewEstaNav').click(function() {
+        $('#frmNewEsta').modal('show');
+    });
+
+
+
     $('#btnDelCat').click(function() {
         $('#frmDelCat').modal('show');
     });
     $('#btnModCatNav').click(function() {
         $('#frmModCat').modal('show');
     });
+
+
+    $('#frmNewEsta').on('show.bs.modal', function() {
+        $('#frmNewNameEsta').val(null);
+        $('#frmNewAddresEsta').val(null);
+        $('#msgNewEsta').val(null);
+    });
+
 
     $('#frmNewProd').on('show.bs.modal', function() {
         showCats('#sltCatNewProd');
@@ -307,6 +323,21 @@ $(document).ready(function() {
     });
 
 
+    $('#btnSubmitNewEsta').click(function(){
+        var btn = $(this);
+        var newName = $('#frmNewNameEsta').val();
+        var newAddres;
+        if(newName.length > 3){
+            newAddres = $('#frmNewAddresEsta').val();
+            var datos = {action: 'newEsta', nombre: newName, addres: newAddres}
+            enviarDatos(datos, '#msgNewEsta', btn, 'El establecimiento "'+ newName +'"', "creo")
+        }else{
+            showMsg('#msgNewEsta', 'warning', 'El nombre tiene que ser mayor a 3 caracteres');
+        }
+        
+        
+    });
+
 
     $('#btnFrmModCatExe').click(function() {
         var btn = this;
@@ -322,7 +353,7 @@ $(document).ready(function() {
             $('#frmModDesc').val("");
             $('#frmModName').val("");
             showCats('#sltcatMod');
-        }else{
+        } else {
             showMsg('#msgModCat', 'warning', 'El nombre tiene que contener solamente letras');
         }
     });

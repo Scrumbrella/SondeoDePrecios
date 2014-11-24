@@ -1,5 +1,39 @@
 <%@ page pageEncoding="UTF-8" %>
 
+<!-- Agregar Establecimiento -->
+<div class="modal fade" id="frmNewEsta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header success">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-info" id="myModalLabel">Agregar Establecimiento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="well well-lg">
+                    <div id="msgNewEsta"></div>
+                    <form role="form" id="fNC">
+                        <div class="form-group">
+                            <label for="frmNewNameEsta">Nombre</label>
+                            <input type="text" id="frmNewNameEsta" name="frmNewName" class="form-control" required size="100">
+                        </div>
+                        <div class="form-group float-label-control">
+                            <label for="frmNewAddresEsta">Dirección</label>
+                            <textarea class="form-control" id="frmNewAddresEsta" rows="2" cols="55" required></textarea>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success ladda-button" data-style="expand-right"  id="btnSubmitNewEsta">Crear Establecimiento</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- Agregar Producto -->
 <div class="modal fade" id="frmNewProd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -233,23 +267,6 @@
                 <h4 class="modal-title text-info" id="myModalLabel">Agregar Categoría</h4>
             </div>
             <div class="modal-body">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                    Mostrar Categorías
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
                 <div class="well well-lg">
                     <div id="datos"></div>
                     <form role="form" id="fNC">

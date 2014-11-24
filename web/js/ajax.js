@@ -69,6 +69,14 @@ function showCats(recibe) {
     });
 }
 
+
+function showEsta(recibe) {
+    $.post('home', {action: 'showEsta'},
+    function(responseText) {
+        $(recibe).html(responseText);
+    });
+}
+
 function gestNewValProd(estado, accion) {
     if (estado === true) {
         $('#sltCat' + accion + 'Prod').val(0);
@@ -169,7 +177,9 @@ $(document).ready(function() {
         $('#frmNewEsta').modal('show');
     });
 
-
+    $('#btnModEstaNav').click(function() {
+        $('#frmModEsta').modal('show');
+    });
 
     $('#btnDelCat').click(function() {
         $('#frmDelCat').modal('show');
@@ -182,9 +192,14 @@ $(document).ready(function() {
     $('#frmNewEsta').on('show.bs.modal', function() {
         $('#frmNewNameEsta').val(null);
         $('#frmNewAddresEsta').val(null);
-        $('#msgNewEsta').val(null);
+        $('#msgNewEsta').html(null);
     });
-
+    $('#frmModEsta').on('show.bs.modal', function() {
+        //showEstable('#sltEstaMod');
+        $('#frmModNameEsta').val(null);
+        $('#frmModAddresEsta').val(null);
+        $('#msgModEsta').html(null);
+    });
 
     $('#frmNewProd').on('show.bs.modal', function() {
         showCats('#sltCatNewProd');
@@ -323,19 +338,19 @@ $(document).ready(function() {
     });
 
 
-    $('#btnSubmitNewEsta').click(function(){
+    $('#btnSubmitNewEsta').click(function() {
         var btn = $(this);
         var newName = $('#frmNewNameEsta').val();
         var newAddres;
-        if(newName.length > 3){
+        if (newName.length > 3) {
             newAddres = $('#frmNewAddresEsta').val();
             var datos = {action: 'newEsta', nombre: newName, addres: newAddres}
-            enviarDatos(datos, '#msgNewEsta', btn, 'El establecimiento "'+ newName +'"', "creo")
-        }else{
+            enviarDatos(datos, '#msgNewEsta', btn, 'El establecimiento "' + newName + '"', "creo")
+        } else {
             showMsg('#msgNewEsta', 'warning', 'El nombre tiene que ser mayor a 3 caracteres');
         }
-        
-        
+
+
     });
 
 

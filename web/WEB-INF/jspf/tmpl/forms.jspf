@@ -32,6 +32,41 @@
     </div>
 </div>
 
+<!-- Modificar Establecimiento-->
+<div class="modal fade" id="frmModEsta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header success">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-info" id="myModalLabel">Modificar Establecimiento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="well well-lg">
+                    <div id="msgModEsta"></div>
+                    <form role="form" action="<%= request.getContextPath()%>/home" method="post" id="fNC">
+                        <div class="form-group">
+                            <span class="help-block">Seleccione el establecimiento a modificar.</span>
+                            <select id="sltcatMod" name="sltEstaMod"><option value="0">...Cargando...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="frmModName">Nombre</label>
+                            <input type="text" id="frmModNameEsta" name="frmModNameEsta" class="form-control" required size="100">
+                        </div>
+                        <div class="form-group float-label-control">
+                            <label for="frmModDesc">Direccion</label>
+                            <textarea class="form-control" id="frmModAddresEsta" name="frmNewDesc" rows="3" cols="55" required></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-warning ladda-button" data-style="expand-right"  id="btnFrmModCatExe">Modificar Categoría</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Agregar Producto -->

@@ -1,13 +1,8 @@
 package Modelo.Controlador;
 
-import Modelo.Categoria;
-import Modelo.DAO.CatalogoDeCategoria;
-import Modelo.DAO.CatalogoDeProductos;
-import Modelo.Producto;
 import Modelo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,118 +17,13 @@ import javax.servlet.http.HttpSession;
  */
 public class Sistema extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    private CatalogoDeProductos catProducto;
-    private CatalogoDeCategoria catCategoria;
-
-    private boolean seguridad(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("usuario");
-        boolean res = true;
-        if (user == null) {
-            res = false;
-            request.getRequestDispatcher("/Login").forward(request, response);
-        }
-        return res;
-    }
-
-    private void processRequestGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Enumeration<String> parametros = request.getParameterNames();
-        RequestDispatcher rd;
-        if (!parametros.hasMoreElements()) {
-            request.setAttribute("titulo", ".::Bienvenido::.");
-            HttpSession sesion = request.getSession(true);
-            Usuario us = (Usuario) sesion.getAttribute("usuario");
-            request.setAttribute("usuario", us);
-            rd = request.getRequestDispatcher("/index.jsp");
-            request.setAttribute("valido", "ok");
-            rd.forward(request, response);
-        }
-    }
-
-    private void eliminarCategoria(int idCategoria, PrintWriter out) {
-        this.catCategoria = new CatalogoDeCategoria();
-        Categoria cat = this.catCategoria.getCategoria(idCategoria);
-        boolean hecho = this.catCategoria.eliminarCategoria(cat);
-        String res = (hecho) ? "1" : "0";
-        out.print(res);
-    }
-
-    private void mostrarCategorias(PrintWriter out) {
-        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        ArrayList<Categoria> lista = catalogo.getCategorias();
-        String option = "<option  value=\"0\">Selecionar...</option>";
-        for (Categoria categoria : lista) {
-            option += "<option value=\"" + categoria.getIdcategoria() + "\">" + categoria.getNombre() + "</option>";
-        }
-        out.println(option);
-    }
-
-    private void addCategoria(String nombre, String descripcion, PrintWriter out) {
-        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        boolean hecho = catalogo.noExisteCategoria(nombre);
-        String res = "2";
-        if (hecho) {
-            hecho = catalogo.addCategoria(new Categoria(nombre, descripcion));
-            res = (hecho) ? "1" : "0";
-        }
-        out.print(res);
-    }
-
-    private void getDescCategoria(int idCategoria, PrintWriter out) {
-        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        out.println(catalogo.getCategoria(idCategoria).getDescripcion());
-    }
-
-    private void modificarCategoria(HttpServletRequest request, PrintWriter out) {
-        int idCat = Integer.parseInt(request.getParameter("idCat"));
-        String nombre, descripcion;
-        nombre = request.getParameter("nombre");
-        descripcion = request.getParameter("descripcion");
-        CatalogoDeCategoria catalogo = new CatalogoDeCategoria();
-        Categoria cat = new Categoria(idCat, nombre, descripcion);
-        boolean hecho = catalogo.modificarCategoria(cat);
-        String res = (hecho) ? "1" : "0";
-        out.print(res);
-    }
-
-    private void getNombDescCat(int idCategoria, PrintWriter out) {
-        this.catCategoria = new CatalogoDeCategoria();
-        Categoria cat = this.catCategoria.getCategoria(idCategoria);
-        out.print(cat.getDescripcion() + "|" + cat.getNombre());
-
-    }
-
-    private void nuevoProducto(HttpServletRequest request, PrintWriter out) {
-        String nombre, descripcion, unidad;
-        nombre = request.getParameter("nombre");
-        descripcion = request.getParameter("descripcion");
-        unidad = request.getParameter("unidad");
-        boolean valido = this.catProducto.noExisteProducto(nombre);
-        String res = "2";
-        if (valido) {
-            int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
-            Categoria categoria = this.catCategoria.getCategoria(idCategoria);
-            Producto producto = new Producto(categoria, nombre, descripcion, unidad);
-            boolean hecho = this.catProducto.addProducto(producto);
-            res = (hecho) ? "1" : "0";
-        }
-        out.print(res);
-    }
+    private final CategoriaController controladorCategoria = new CategoriaController();
+    private final ProductoController controladorProductos = new ProductoController();
+    private final EstablecimientoController controladorEstablecimiento = new EstablecimientoController();
 
     private void processRequestPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration<String> parametros = request.getParameterNames();
         PrintWriter out = response.getWriter();
-        this.catProducto = new CatalogoDeProductos();
-        this.catCategoria = new CatalogoDeCategoria();
         RequestDispatcher rd;
         if (parametros.hasMoreElements()) {
             String accion = request.getParameter("action");
@@ -172,18 +62,29 @@ public class Sistema extends HttpServlet {
                     case "delProd":
                         delProd(request, out);
                         break;
+                    case "newEsta":
+                        addEstablecimiento(request, out);
+                        break;
+                    case "showEstas":
+                        mostrarEstablecimientos(request, out);
+                        break;
+                    case "getEsta":
+                        getEsta(request, out);
+                        break;
+                    case "delEsta":
+                        eliminarEstablecimiento(request, out);
+                        break;
                 }
             }
         } else {
             request.setAttribute("titulo", ".::Bienvenido::.");
-            request.setAttribute("usuario", "Nahúm Gálvez");
             rd = request.getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
         }
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+      // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -229,43 +130,112 @@ public class Sistema extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void getCatProd(HttpServletRequest request, PrintWriter out) {
-        int idCat = Integer.parseInt(request.getParameter("idCat"));
-        this.catCategoria = new CatalogoDeCategoria();
-        Categoria cat = this.catCategoria.getCategoria(idCat);
-        out.print(cat.getProds());
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    //USUARIO
+    private boolean seguridad(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        Usuario user = (Usuario) session.getAttribute("usuario");
+        boolean res = true;
+        if (user == null) {
+            res = false;
+            request.getRequestDispatcher("/Login").forward(request, response);
+        }
+        return res;
     }
 
-    private void getDataProd(HttpServletRequest request, PrintWriter out) {
-        int idProd = Integer.parseInt(request.getParameter("idProd"));
-        this.catProducto = new CatalogoDeProductos();
-        Producto prod = this.catProducto.getProducto(idProd);
-        out.print(prod.getIdCategoria() + "|" + prod.getUnidadMedida() + "|" + prod.getNombre() + "|" + prod.getDescripcion());
+    private void processRequestGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Enumeration<String> parametros = request.getParameterNames();
+        RequestDispatcher rd;
+        if (!parametros.hasMoreElements()) {
+            request.setAttribute("titulo", ".::Bienvenido::.");
+            HttpSession sesion = request.getSession(true);
+            Usuario us = (Usuario) sesion.getAttribute("usuario");
+            request.setAttribute("usuario", us);
+            rd = request.getRequestDispatcher("/index.jsp");
+            request.setAttribute("valido", "ok");
+            rd.forward(request, response);
+        }
+    }
 
+    //CATEGORIA
+    private void addCategoria(String nombre, String descripcion, PrintWriter out) {
+        out.print(this.controladorCategoria.addCategoria(nombre, descripcion));
+    }
+
+    private void modificarCategoria(HttpServletRequest request, PrintWriter out) {
+        out.print(controladorCategoria.modificarCategoria(request));
+    }
+
+    private void eliminarCategoria(int idCategoria, PrintWriter out) {
+        out.print(controladorCategoria.eliminarCategoria(idCategoria));
+    }
+
+    private void mostrarCategorias(PrintWriter out) {
+        out.print(controladorCategoria.mostrarCategorias());
+    }
+
+    private void getDescCategoria(int idCategoria, PrintWriter out) {
+        out.print(controladorCategoria.getDescCategoria(idCategoria));
+    }
+
+    private void getNombDescCat(int idCategoria, PrintWriter out) {
+        out.print(controladorCategoria.getNombDescCat(idCategoria));
+    }
+
+    //PRODUCTO
+    private void nuevoProducto(HttpServletRequest request, PrintWriter out) {
+        int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
+        controladorCategoria.getNombDescCat(idCategoria);
+        out.print(controladorProductos.nuevoProducto(request, controladorCategoria.getCategoria()));
     }
 
     private void modProd(HttpServletRequest request, PrintWriter out) {
-        int idCat = Integer.parseInt(request.getParameter("idCat"));
-        int idPro = Integer.parseInt(request.getParameter("idProd"));
-        String nombre = request.getParameter("nombre");
-        String desc = request.getParameter("desc");
-        String unidad = request.getParameter("unidad");
-        this.catCategoria = new CatalogoDeCategoria();
-        this.catProducto = new CatalogoDeProductos();
-        Categoria cat = this.catCategoria.getCategoria(idCat);
-        Producto prod = new Producto(idPro, cat, nombre, desc, unidad);
-        boolean res = this.catProducto.modificarProducto(prod);
-        String respuesta = (res) ? "1" : "0";
-        out.print(respuesta);
+        int idCategoria = Integer.parseInt(request.getParameter("idCat"));
+        controladorCategoria.getNombDescCat(idCategoria);
+        out.print(controladorProductos.modProd(request, controladorCategoria.getCategoria()));
     }
 
     private void delProd(HttpServletRequest request, PrintWriter out) {
-        int idProd = Integer.parseInt(request.getParameter("idProd"));
-        this.catProducto = new CatalogoDeProductos();
-        String res = "2";
-        boolean sts = this.catProducto.eliminarProducto(idProd);
-        res = (sts) ? "1" : "0";
-        out.print(res);
+        out.print(controladorProductos.delProd(request));
+    }
+
+    private void getCatProd(HttpServletRequest request, PrintWriter out) {
+        int idCat = Integer.parseInt(request.getParameter("idCat"));
+        controladorCategoria.getNombDescCat(idCat);
+        out.print(controladorProductos.getCatProd(request, controladorCategoria.getCategoria()));
+    }
+
+    private void getDataProd(HttpServletRequest request, PrintWriter out) {
+        out.print(controladorProductos.getDataProd(request));
+    }
+
+    //ESTABLECIMIENTO
+    private void addEstablecimiento(HttpServletRequest request, PrintWriter out) {
+    out.print(controladorEstablecimiento.addEstablecimiento(request));
+    }
+    
+    /*private void modificarEstablecimiento(HttpServletRequest request, PrintWriter out) {
+    out.print(controladorEstablecimiento.modificarEstablecimiento(request));
+    }
+    */
+    private void eliminarEstablecimiento(HttpServletRequest request, PrintWriter out) {
+    out.print(controladorEstablecimiento.eliminarEstablecimiento(request));
+    }
+
+    private void mostrarEstablecimientos(HttpServletRequest request, PrintWriter out) {
+        out.print(controladorEstablecimiento.getEstablecimientos());
+    }
+
+    private void getEsta(HttpServletRequest request, PrintWriter out) {
+        out.print(controladorEstablecimiento.getAddressEsta(request));
     }
 
 }

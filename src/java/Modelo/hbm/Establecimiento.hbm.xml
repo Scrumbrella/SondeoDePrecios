@@ -4,9 +4,9 @@
 <!-- Generated 11-23-2014 10:06:42 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="Modelo.Establecimiento" table="ESTABLECIMIENTO" schema="SONDEOPRECIOS">
-        <id name="idestablecimiento" type="short">
+        <id name="idestablecimiento" type="integer">
             <column name="IDESTABLECIMIENTO" precision="3" scale="0" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="nombre" type="string">
             <column name="NOMBRE" length="100" not-null="true" />

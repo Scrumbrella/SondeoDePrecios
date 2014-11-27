@@ -10,7 +10,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Sistema</servlet-name>
-        <url-pattern>/home/*</url-pattern>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

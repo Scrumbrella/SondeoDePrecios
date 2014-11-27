@@ -71,7 +71,7 @@ function showCats(recibe) {
 
 
 function showEsta(recibe) {
-    $.post('home', {action: 'showEsta'},
+    $.post('home', {action: 'showEstas'},
     function(responseText) {
         $(recibe).html(responseText);
     });
@@ -197,14 +197,14 @@ $(document).ready(function() {
         $('#frmNewAddresEsta').val(null);
         $('#msgNewEsta').html(null);
     });
-    
+
     $('#frmModEsta').on('show.bs.modal', function() {
         showEstable('#sltEstaMod');
         $('#frmModNameEsta').val(null);
         $('#frmModAddresEsta').val(null);
         $('#msgModEsta').html(null);
     });
-    
+
     $('#frmDelEsta').on('show.bs.modal', function() {
         showEsta('#sltEstaDel');
         $('#AddressEstaDel').html('Seleccione un establecimiento.');
@@ -217,10 +217,10 @@ $(document).ready(function() {
     });
 
     $('#frmModCat').on('show.bs.modal', function(e) {
+        showCats('#sltModCat');
         $('#msgModCat').html(null);
         $('#frmModDesc').val(null);
         $('#frmModName').val(null);
-        showCats('#sltcatMod');
     });
 
     $('#frmModProd').on('show.bs.modal', function() {
@@ -243,6 +243,18 @@ $(document).ready(function() {
         $('#sltProdSrchDelProd').prop("disable", true);
     });
 
+
+    $('#sltEstaDel').change(function() {
+        var idEsta = $(this).val();
+        var datos = {action: 'getEsta', idEsta: idEsta}
+        if (idEsta != "0") {
+            $.post('home', datos, function(res) {
+                $('#AddressEstaDel').html(res);
+            });
+        }else{
+            $('#AddressEstaDel').html('Selecione un establecimiento');
+        }
+    });
     $('#sltCatDel').change(function() {
         $("#sltCatDel option:selected").each(function() {
             var idCatSel = $(this).val();
@@ -257,8 +269,8 @@ $(document).ready(function() {
         });
     });
 
-    $('#sltcatMod').change(function() {
-        $("#sltcatMod option:selected").each(function() {
+    $('#sltModCat').change(function() {
+        $("#sltModCat option:selected").each(function() {
             var idCatSel = $(this).val();
             if (idCatSel !== "0") {
                 $.post('home', {idCat: idCatSel, action: 'getCatValues'
@@ -350,12 +362,12 @@ $(document).ready(function() {
 
 
     $('#btnSubmitNewEsta').click(function() {
-        var btn = $(this);
+        var btn = this;
         var newName = $('#frmNewNameEsta').val();
         var newAddres;
         if (newName.length > 3) {
             newAddres = $('#frmNewAddresEsta').val();
-            var datos = {action: 'newEsta', nombre: newName, addres: newAddres};
+            var datos = {action: 'newEsta', nombre: newName, address: newAddres};
             enviarDatos(datos, '#msgNewEsta', btn, 'El establecimiento "' + newName + '"', "creo");
         } else {
             showMsg('#msgNewEsta', 'warning', 'El nombre tiene que ser mayor a 3 caracteres');
@@ -399,21 +411,25 @@ function delCatExe() {
         var idCatSel = $(this).val();
         var value = $(this).text();
         if (idCatSel !== "0") {
+            showCats('#sltCatDel');
             var valores = {idCat: idCatSel, action: 'CatDel'};
             enviarDatos(valores, '#msgDelCat', btn, "La categoría \"" + value + "\"", "elimino");
-            showCats("#sltCatDel");
         } else {
             showMsgEmpty('#msgDelCat');
         }
     });
+    $('#msgDelCat').html(null);
+    $('#desCatDel').html("Selecione una categoría");
+    showCats('#sltCatDel');
 }
 
 function delEstaExe() {
-        var btn = document.getElementById('btnDelEstaExe');
-        var idEsta = $('#sltEstaDel').val();
-        var datos = {action: 'newEsta', idEsta: idEsta};
-        enviarDatos(datos, '#msgDelEsta', btn, 'El establecimiento' , "elimino");
-    }
+    var btn = document.getElementById('btnDelEstaExe');
+    var idEsta = $('#sltEstaDel').val();
+    var datos = {action: 'delEsta', idEsta: idEsta};
+    enviarDatos(datos, '#msgDelEsta', btn, 'El establecimiento', "elimino");
+    showEsta('#sltEstaDel');
+}
 
 function delProdExe() {
     var btn = document.getElementById('btnDelProdExe');
@@ -422,7 +438,6 @@ function delProdExe() {
     $('#sltProdSrchDelProd option:selected').each(function() {
         nombre = $(this).text();
     });
-    console.log("idProducto:" + idProd);
     var datos = {action: 'delProd', idProd: idProd};
     enviarDatos(datos, '#msgDelProd', btn, "El producto \"" + nombre + "\"", "elimino");
     $('#sltProdSrchDelProd').html('<option value="0" disable>Selecione una categor&iacute;a</option>');

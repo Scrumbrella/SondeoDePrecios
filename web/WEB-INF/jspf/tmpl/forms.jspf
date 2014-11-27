@@ -378,7 +378,7 @@
                     <form role="form">
                         <div class="form-group">
                             <span class="help-block">Seleccione la categoría a ser eliminada.</span>
-                            <select id="sltCatDel" name="sltCatDel">
+                            <select id="sltCatDel">
                                 <option disable="true" value="0">....Cargando...</option>
                             </select>
                         </div>
@@ -413,7 +413,8 @@
                     <form role="form" action="<%= request.getContextPath()%>/home" method="post" id="fNC">
                         <div class="form-group">
                             <span class="help-block">Seleccione la categoría a modificar.</span>
-                            <select id="sltcatMod" name="sltCatMod"><option value="0">...Cargando...</option>
+                            <select id="sltModCat">
+                                <option value="0">...No Carga...</option>
                             </select>
                         </div>
                         <div class="form-group">

@@ -5,10 +5,10 @@
 <hibernate-mapping>
     <class name="Modelo.Precio" table="PRECIO" schema="SONDEOPRECIOS">
         <composite-id name="id" class="Modelo.PrecioId">
-            <key-property name="idestablecimiento" type="short">
+            <key-property name="idestablecimiento" type="integer">
                 <column name="IDESTABLECIMIENTO" precision="3" scale="0" />
             </key-property>
-            <key-property name="idproducto" type="long">
+            <key-property name="idproducto" type="integer">
                 <column name="IDPRODUCTO" precision="10" scale="0" />
             </key-property>
         </composite-id>
@@ -18,7 +18,7 @@
         <many-to-one name="producto" class="Modelo.Producto" update="false" insert="false" fetch="select">
             <column name="IDPRODUCTO" precision="10" scale="0" not-null="true" />
         </many-to-one>
-        <property name="precio" type="big_decimal">
+        <property name="precio" type="double">
             <column name="PRECIO" precision="10" not-null="true" />
         </property>
     </class>

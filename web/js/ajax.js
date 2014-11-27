@@ -125,7 +125,7 @@ $(document).ready(function() {
             var datos = {idCategoria: idCatVar, nombre: nombreVar, descripcion: descVar, unidad: unidadVar, action: 'newProd'};
             enviarDatos(datos, '#frmResNewPro', this, "El producto \"" + nombreVar + "\"", "ingreso");
         } else {
-            showMsg('#frmResNewPro', 'warning', 'El nombre tiene que contener solamente letras')
+            showMsg('#frmResNewPro', 'warning', 'El nombre tiene que contener solamente letras');
         }
     });
 
@@ -180,6 +180,9 @@ $(document).ready(function() {
     $('#btnModEstaNav').click(function() {
         $('#frmModEsta').modal('show');
     });
+    $('#btnDelEstaNav').click(function() {
+        $('#frmDelEsta').modal('show');
+    });
 
     $('#btnDelCat').click(function() {
         $('#frmDelCat').modal('show');
@@ -194,12 +197,20 @@ $(document).ready(function() {
         $('#frmNewAddresEsta').val(null);
         $('#msgNewEsta').html(null);
     });
+    
     $('#frmModEsta').on('show.bs.modal', function() {
-        //showEstable('#sltEstaMod');
+        showEstable('#sltEstaMod');
         $('#frmModNameEsta').val(null);
         $('#frmModAddresEsta').val(null);
         $('#msgModEsta').html(null);
     });
+    
+    $('#frmDelEsta').on('show.bs.modal', function() {
+        showEsta('#sltEstaDel');
+        $('#AddressEstaDel').html('Seleccione un establecimiento.');
+        $('#msgDelEsta').html(null);
+    });
+
 
     $('#frmNewProd').on('show.bs.modal', function() {
         showCats('#sltCatNewProd');
@@ -344,15 +355,12 @@ $(document).ready(function() {
         var newAddres;
         if (newName.length > 3) {
             newAddres = $('#frmNewAddresEsta').val();
-            var datos = {action: 'newEsta', nombre: newName, addres: newAddres}
-            enviarDatos(datos, '#msgNewEsta', btn, 'El establecimiento "' + newName + '"', "creo")
+            var datos = {action: 'newEsta', nombre: newName, addres: newAddres};
+            enviarDatos(datos, '#msgNewEsta', btn, 'El establecimiento "' + newName + '"', "creo");
         } else {
             showMsg('#msgNewEsta', 'warning', 'El nombre tiene que ser mayor a 3 caracteres');
         }
-
-
     });
-
 
     $('#btnFrmModCatExe').click(function() {
         var btn = this;
@@ -398,8 +406,14 @@ function delCatExe() {
             showMsgEmpty('#msgDelCat');
         }
     });
-
 }
+
+function delEstaExe() {
+        var btn = document.getElementById('btnDelEstaExe');
+        var idEsta = $('#sltEstaDel').val();
+        var datos = {action: 'newEsta', idEsta: idEsta};
+        enviarDatos(datos, '#msgDelEsta', btn, 'El establecimiento' , "elimino");
+    }
 
 function delProdExe() {
     var btn = document.getElementById('btnDelProdExe');
@@ -416,10 +430,3 @@ function delProdExe() {
     gestNewValProd(true, 'Del');
     showCats('#sltCatSrchDelProd');
 }
-
-
-$(function() {
-    $('#btn').click(function() {
-        $('#slt').val("val3");
-    });
-});

@@ -9,11 +9,11 @@
     <property name="hibernate.connection.password">root</property>
     <property name="hibernate.current_session_context_class">thread</property>
     <property name="hibernate.show_sql">true</property>
-    <mapping resource="Modelo/Rol.hbm.xml"/>
-    <mapping resource="Modelo/Producto.hbm.xml"/>
-    <mapping resource="Modelo/Usuario.hbm.xml"/>
-    <mapping resource="Modelo/Categoria.hbm.xml"/>
-    <mapping resource="Modelo/Establecimiento.hbm.xml"/>
-    <mapping resource="Modelo/Precio.hbm.xml"/>
+    <mapping resource="Modelo/hbm/Rol.hbm.xml"/>
+    <mapping resource="Modelo/hbm/Producto.hbm.xml"/>
+    <mapping resource="Modelo/hbm/Usuario.hbm.xml"/>
+    <mapping resource="Modelo/hbm/Categoria.hbm.xml"/>
+    <mapping resource="Modelo/hbm/Establecimiento.hbm.xml"/>
+    <mapping resource="Modelo/hbm/Precio.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

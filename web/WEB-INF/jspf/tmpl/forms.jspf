@@ -43,7 +43,7 @@
             <div class="modal-body">
                 <div class="well well-lg">
                     <div id="msgModEsta"></div>
-                    <form role="form" action="<%= request.getContextPath()%>/home" method="post" id="fNC">
+                    <form role="form">
                         <div class="form-group">
                             <span class="help-block">Seleccione el establecimiento a modificar.</span>
                             <select id="sltcatMod" name="sltEstaMod"><option value="0">...Cargando...</option>
@@ -55,19 +55,54 @@
                         </div>
                         <div class="form-group float-label-control">
                             <label for="frmModDesc">Direccion</label>
-                            <textarea class="form-control" id="frmModAddresEsta" name="frmNewDesc" rows="3" cols="55" required></textarea>
+                            <textarea class="form-control" id="frmModAddresEsta" name="frmNewAddressEsta" rows="3" cols="55" required maxlength="300"></textarea>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-warning ladda-button" data-style="expand-right"  id="btnFrmModCatExe">Modificar Categoría</button>
+                <button type="button" class="btn btn-warning ladda-button" data-style="expand-right"  id="btnFrmModEstaExe">Modificar Establecimiento</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Eliminar Establecimiento-->
+<div class="modal fade" id="frmDelEsta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header success">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-danger" id="myModalLabel">Eliminar Establecimiento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="well well-lg">
+                    <div id="msgDelEsta"></div>
+                    <h2 class="text-warning">Esta acción no se puede deshacer!</h2>
+                    <form role="form">
+                        <div class="form-group">
+                            <span class="help-block">Seleccione el establecimiento a ser eliminado.</span>
+                            <select id="sltEstaDel" name="sltCatDel">
+                                <option disable="true" value="0">....Cargando...</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="panel panel-primary ">
+                        <div class="panel-heading">Dirección del establecimiento:</div>
+                        <div class="panel-body" id="AddressEstaDel">
+                            Seleccione un establecimiento.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-danger ladda-button confirmation-callback" data-style="expand-right"  id="btnDelEstaExe">Eliminar Establecimiento</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Agregar Producto -->
 <div class="modal fade" id="frmNewProd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

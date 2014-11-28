@@ -65,16 +65,31 @@ function enviarDatos(valores, recibe, btn, cosa, accion) {
 function showCats(recibe) {
     $.post('home', {action: 'showCat'},
     function(responseText) {
-        $(recibe).html(responseText);
+        if (responseText !== "") {
+            $(recibe).prop('disable', false);
+            $(recibe).html(responseText);
+        } else {
+            $(recibe).prop('disable', true);
+            $(recibe).html('<option value="0">No hay categorías</option>');
+        }
+
     });
 }
 
 
 function showEsta(recibe) {
+    var res;
     $.post('home', {action: 'showEstas'},
     function(responseText) {
-        $(recibe).html(responseText);
+        if (responseText !== "") {pro
+            $(recibe).prop('disable', false);
+            $(recibe).html(responseText);
+        } else {
+            $(recibe).prop('disable', true);
+            $(recibe).html('<option value="0">No hay establecimientos</option>');
+        }
     });
+    return res;
 }
 
 function gestNewValProd(estado, accion) {
@@ -199,7 +214,10 @@ $(document).ready(function() {
     });
 
     $('#frmModEsta').on('show.bs.modal', function() {
-        showEstable('#sltEstaMod');
+        var res = showEsta('#sltEstaMod');
+        console.log(res +", tipo: "+ typeof res);
+        $('#frmModNameEsta').prop('disable', res);
+        $('#frmModAddresEsta').prop('disable', res);
         $('#frmModNameEsta').val(null);
         $('#frmModAddresEsta').val(null);
         $('#msgModEsta').html(null);
@@ -251,7 +269,7 @@ $(document).ready(function() {
             $.post('home', datos, function(res) {
                 $('#AddressEstaDel').html(res);
             });
-        }else{
+        } else {
             $('#AddressEstaDel').html('Selecione un establecimiento');
         }
     });

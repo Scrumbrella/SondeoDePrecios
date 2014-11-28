@@ -44,7 +44,7 @@ public class EstablecimientoController {
     
     public String getEstablecimientos(){
         ArrayList<Establecimiento> lista = catEstablecimiento.getEstablecimientos();
-        String option = "<option  value=\"0\">Selecionar...</option>";
+        String option = "";
         for (Establecimiento esta : lista) {
             option += "<option value=\"" + esta.getIdestablecimiento() + "\">" + esta.getNombre() + "</option>";
         }

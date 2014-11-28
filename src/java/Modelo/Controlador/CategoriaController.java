@@ -49,7 +49,7 @@ public class CategoriaController {
     //Mostar Categoria
     public String mostrarCategorias() {
         ArrayList<Categoria> lista = catalogo.getCategorias();
-        String option = "";
+        String option = "<option value=\"0\">Seleccionar</option>";
         for (Categoria cat : lista) {
             option += "<option value=\"" + cat.getIdcategoria() + "\">" + cat.getNombre() + "</option>";
         }

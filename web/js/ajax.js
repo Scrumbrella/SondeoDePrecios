@@ -81,7 +81,7 @@ function showEsta(recibe) {
     var res;
     $.post('home', {action: 'showEstas'},
     function(responseText) {
-        if (responseText !== "") {pro
+        if (responseText !== "") {
             $(recibe).prop('disable', false);
             $(recibe).html(responseText);
         } else {
